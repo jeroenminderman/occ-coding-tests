@@ -1,13 +1,9 @@
-<img src="https://github.com/datasciencecampus/awesome-campus/blob/master/ons_dsc_logo.png">
-
-# Repository name
+# occ-coding-tests: demo and test of occupation coding tools
 
 # Introduction
 ## About
-*Describe what this repo contains and what the project is.*
-
+This repo aims to (1) demonstrate the use of tools for coding occupation descriptions to the ISCO-08 scheme, and (2) serve as a demonstration of the efficacy "accuracy" of these approaches relative to a common baseline test data set.
 ## Installation
-*Describe technical set-up. Such as the required dependencies.*
 
 ### Pre-commit actions
 This repository contains a configuration of pre-commit hooks. These are language agnostic and focussed on repository security (such as detection of passwords and API keys). If approaching this project as a developer, you are encouraged to install and enable `pre-commits` by running the following in your shell:
@@ -26,25 +22,8 @@ Once pre-commits are activated, whenever you commit to this repository a series 
 **NOTE:** Pre-commit hooks execute Python, so it expects a working Python build.
 
 ## Usage
-*Explain how to use the things in the repo.*
-
-### Workflow
-*You may wish to consider generating a graph to show your project workflow. GitHub markdown provides native support for [mermaid](https://mermaid.js.org/syntax/flowchart.html), an example of which is provided below:*
-
-```mermaid
-flowchart TD
-   id1[(Some data)] --> id2(Some processing)
-   id3[(More data)] --> id2
-   id2 --> id4[Some output]
-```
-
-
-# Data Science Campus
-At the [Data Science Campus](https://datasciencecampus.ons.gov.uk/about-us/) we apply data science, and build skills, for public good across the UK and internationally. Get in touch with the Campus at [datasciencecampus@ons.gov.uk](datasciencecampus@ons.gov.uk).
 
 # License
-
-<!-- Unless stated otherwise, the codebase is released under [the MIT Licence][mit]. -->
 
 The code, unless otherwise stated, is released under [the MIT Licence][mit].
 
