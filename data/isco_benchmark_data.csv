@@ -1,0 +1,86 @@
+﻿ID,TITLE,TASKS,INDUSTRY,MANUAL_ISCO1,MANUAL_ISCO2,MANUAL_ISCO3,TYPE,COMMENTS
+1,Kapana seller,cooking and selling meat,,5212,,,Semantic ambiguity,Localised term for specific street food seller - definitely not explicitly included in current coding scheme
+2,Psychologist,"Conducting and publishing research into psychological topics, particularly mental health",University,2634,,,Scheme ambiguity,"Testing sensitivity of scheme to different types of ""Psychologist"""
+3,Psychologist,Treating people with mental health conditions,Medical,2634,,,Scheme ambiguity,"Testing sensitivity of scheme to different types of ""Psychologist"""
+4,Clinical psychologist,Treating people with mental health conditions,Medical,2634,,,Exact match,"Testing sensitivity of scheme to different types of ""Psychologist"""
+5,farm help,odd jobs at farm including fencing and cleaning,,921,,,Deeper ambiguity,"Testing detail for ""farm help"". Lack of data for 4d (ambiguous between 9211, 9212, and 9213)"
+6,farm help,odd jobs at pig farm including fencing and cleaning,,9212,,,Semantic ambiguity,"Testing detail for ""farm help"". Should be specific to 9212 (""pig"" == ""animal"") but might be amiguous depending on matching technique"
+7,farm help,odd jobs at crop farm including fencing and cleaning,,9211,,,,"Testing detail for ""farm help"". Expected specific to 9211"
+8,Data Scientist,"Using software, artificial intelligence and machine learning to analyse and interpret large amounts of data, to provide advice on business or policy decision making",Government,,,,Scheme ambiguity,
+9,coder,"developing, testing and delivering computer code",,2512,,,Semantic ambiguity,"Testing ""coder"" vs ""programmer"""
+10,programmer,developing software,,2512,,,Semantic ambiguity,"Testing ""coder"" vs ""programmer"""
+11,hairdresser,cutting hair,Self employed,5141,,,,Near-exact match (plural vs singular)
+12,barber,haircuts,,5141,,,Exact match,
+13,manager of hotel,supervising hotel staff,Hospitality,1411,,,,"Explicit excluded from 5151 (Cleaning and housekeeping supervisors); approximate exact match ""Hotel manager""."
+14,Brewery manager,Managing a beer brewery. Supervising staff and production.,,1314,,,Semantic ambiguity,"No explicit inclusion of ""brewery"" in scheme. May be challenging without added semantic context."
+15,Ecological Consultant,undertaking research and surveys to provide advice on the effect of construction and development projects on the natural environment and species. Reporting to nature conservation agencies and planning authorities. Preparing environmental impact assessments and habitat management plans. Planning and running ecological surveys.,,2133,,,,Testing details in task description
+16,Ecological Consultant,wind farm surveys,,2133,,,,Testing details in task description
+17,pastoral administrator at catholic church,supporting spiritual leadership,,334,,,Deeper ambiguity,Ambiguous between 3343 and 3341 without further detail on role/responsibilities
+18,soccer player,playing soccer,Sport,3421,,,Semantic ambiguity,"No explicit reference to ""soccer"" in coding scheme."
+19,football player,playing soccer,Sport,3421,,,Semantic ambiguity,"No explicit reference to ""football player"" in coding scheme."
+20,footballer,playing soccer,Sport,3421,,,Exact match,
+21,teacher,,Education,23,,,Deeper ambiguity,Lack of detail in input
+22,teacher,teaching at secondary school,Education,2330,,,,Minimal detail but expect match
+23,primary school teacher,teaching children,Education,2341,,,Exact match,
+24,cleaner,cleaning doctors surgery,Medical,9112,,,,May be ambiguous between job and industry
+25,cleaner,cleaning at medical center,Service,9112,,,,
+26,cleaner,cleaning houses,Self employed,9111,,,,
+27,Driver,Driving tourist shuttle from airport,Tourism,8331,,,,
+28,Abbatoir worker,Handling carcasses,Agriculture,7511,,,Semantic ambiguity,May be ambiguous: no explicit reference to abbatoir in codescheme
+29,Cook,cooking food,Hospitality,5120,,,Exact match,
+30,Chef,"Running restaurant, preparing meals, managing kitchen",Hospitality,3434,,,Exact match,Exact match but interesting scheme ambiguity with 1412
+31,Manager in restaurant,"Running restaurant, preparing meals, managing kitchen",Hospitality,1412,,,Scheme ambiguity,"See ""chef""/3434"
+32,Lecturer,teaching at univeristy,University,2310,,,,
+33,Nurse,looking after patients in hospital,Medical,2221,,,,
+34,Harvester,harvesting blueberries,Agriculture,9211,,,Semantic ambiguity,"Should be codeable but no specific reference to ""blueberries"" in the scheme"
+35,Post office worker,"Managing the office, sorting mail, planning deliveries",,4412,,,Scheme ambiguity,Potentially uncodeable - tasks overlap between 4412 and 3341
+36,User engagement lead,"Scoping projects with stakeholders, ensuring fit between planned and delivered work and user needs. Managing analyst teams.",Government,1219,,,Scheme ambiguity,
+37,subsistence farmer,"growing food for family, selling products at market",Agriculture,6221,,,Scheme ambiguity,Potentially uncodeable: ambiguous between 6221 and 6110 in terms of input and scheme.
+38,fire suppressor system installer,Installing fire supressor systems,Self employed,7126,,,Deeper ambiguity,"Lack of detail in input, and lack of specific matches in scheme. Code represents likely best fit"
+39,Offshore scaffolder,Installing and maintaining scaffold systems for offshore installations,,7119,,,,
+40,Barbar,Running barbarshop,,5141,,,Input issue,Test of misspelled input. Interpretable given high level of semantic reasoning.
+41,Car mechanic,Fixing vehicles,,7231,,,,
+42,Spray painter,garage,,7132,,,,
+43,Assistant ranger,"Monitoring wildlife, protecting national park access, leading tours",Tourism,5122,,,Deeper ambiguity,Potentially uncodeable: ambiguos between 2133 and 5112 given input and scheme.
+44,Assistant warden,"Monitoring wildlife, supporting management and protection of national park",,2133,,,Deeper ambiguity,"Note ""assistant warden"" above."
+45,Diplomat,,Government,1112,,,,Not literally covered in scheme - would require significant level of semantic understanding
+46,Diplomat,Negotiating foreign policy affairs. Briefing ministers.,Government,1112,,,,Not literally covered in scheme - requires some level of semantic understanding
+47,Social researcher,Running research programme on gender biases in policy making,University,2632,,,,
+48,Strategic risk consultant,,Insurance,2121,,,Deeper ambiguity,"Potentially uncodeable, given lack of input: e.g. could be 2121, 2421 or 2413"
+49,Commercial farmer,"Growing crops, raising cattle, selling products wholesale",Agriculture,6130,,,,
+50,Domestic worker,"cleaning, ironing",,9111,,,,
+51,Cleaner,cleaner working for cleaning agency,,9112,,,Scheme ambiguity,
+52,Grocery manager,"Managing ALDI supermarket, staff resourcing, planning stocking, working on tills",Retail,1420,,,Exact match,
+53,Sales manager,Managing ALDI supermarket marketing campaigns,Retail,1221,,,Exact match,
+54,Manager at ALDI,"Managing ALDI supermarket, staff resourcing, planning stocking, working on tills",Retail,1420,,,Semantic ambiguity,"Not literally covered in scheme, likely needs semantic understanding. Compare ID 52."
+55,Appraiser,Loss assessor for insurance,Insurance,3315,,,Exact match,
+56,Assessor at insurance company,Assessing insurance claim losses,Insurance,3315,,,,
+57,personal trainer,"making exercise plans, supporting customers",,3423,,,Exact match,
+58,secretary,"taking notes for the boss, organising diary",,4120,,,Exact match,
+59,secretary,managing correspondence for a legal firm,Legal,4120,,,Exact match fail,Should be 3342 (Legal secretary) but given title there is an exact match with an inaccurate category (4120). Expect match fail for occupationcoder with exact match finding implemented.
+60,Receptionist,"checking hotel guests in, managing bookings, taking phone calls",Hospitality,4226,,,Exact match,
+61,hotel receptionist,"checking hotel guests in, managing bookings, taking phone calls",Hospitality,4226,,,,Not an exact match but should be correct
+62,receptionist at GP surgery,making patient appointments,Medical,3344,,,,Should be medical secretary (3344) but potential for confusion with general receptionist (4226)
+63,receptionist,making patient appointments at GP surgery,Medical,4226,,,Exact match fail,"Should be 3344 (medical secretary) but given job title has exact match to 4226 (general receptionist), so occupationcoder with exact match finding would fail."
+64,Receptionist,,,4226,,,Exact match,Minimal detail but is an exact match
+65,Constable,,,5412,,,Exact match,Minimal detail but is an exact match
+66,Charcoal burner,,,6210,,,Exact match,Minimal detail but is an exact match
+67,Charcoal maker,Charcoal maker,,6210,,,,"Not an exact match, limited detail, but still expect correct match"
+68,Charcoal maker,"Felling trees, gathering wood, and operating charcoal burners",,6210,,,,"Not an exact match, more detail, expect correct match"
+69,car painter,working in paint and car body shop,,7132,,,,Not an exact match but expect good fit
+70,vehicle painter,working in paint and car body shop,,7132,,,Exact match,
+71,finance manager,finance manager,Finance,1211,,,Exact match,
+72,manager at Lloyds Bank,"Bank staff resourcing, overseeing admin and security",Finance,1346,,,,
+73,senior health assistant,helping patients in medical center,Medical,3256,,,,
+74,fencer,"working on farm, maintaining the fences",Agriculture,921,,,,Strictly speaking can't be coded to more than 3d if not clear what type of farm
+75,fencer,"working on blueberry farm, maintaining the fences",Agriculture,9211,,,,
+76,fencer,"working on pig farm, maintaining the fences",Agriculture,9212,,,,
+77,HR manager,managing human resources at Person Cooperation,,1212,,,,
+78,animal and disease controller,"setting traps and bait, cleaning up",,7544,,,,
+79,pest controller,"setting traps and bait, cleaning up",,7544,,,,
+80,Tyre fitter,fitting car tyres in garage,,7231,,,,"Not an exact match, limited detail, but still expect correct match"
+81,Car mechanic,"working in garage, fixing cars",,7231,,,,"Should be easy but requires semantic understanding (ie ""car"" not in scheme for correct class, ""car"" vs ""vehicle"")"
+82,bartender,"running the bar, serving customers, restocking, cleaning",Hospitality,5132,,,,
+83,market trader,selling clothes and household goods at market,,5211,,,,
+84,teaching assistant,supporting secondary school teachers,Education,5312,,,,
+85,Trawler deckhand,working on fishing boat offshore,Fishery,6223,,,,"Potential confusion with 9216, Fishery labourers"

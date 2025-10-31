@@ -1,0 +1,15 @@
+
+{
+  "fields": [
+    {"name": "ID", "type": "integer", "constraints": {"required": true}},
+    {"name": "TITLE", "type": "string"},
+    {"name": "TASKS", "type": "string"},
+    {"name": "INDUSTRY", "type": "string"},
+    {"name": "MANUAL_ISCO1", "type": "integer", "constraints": {"required": true, "maximum": 9999}},
+    {"name": "MANUAL_ISCO2", "type": "integer", "constraints": {"maximum": 9999}},
+    {"name": "MANUAL_ISCO3", "type": "integer", "constraints": {"maximum": 9999}},
+    {"name": "TYPE", "type": "string", "constraints": {"required": true, "enum": ["Scheme ambiguity", "Semantic ambiguity", "Deeper ambiguity", "Input issue", "Exact match", ""]}},
+    {"name": "COMMENTS", "type": "integer"}
+  ],
+  "missingValues": [""]
+}
