@@ -6,6 +6,35 @@ class CheckBenchmarkData:
         self.results = []
 
     def add_result(self, check_name, success, message, raise_error=False):
+        """
+        Helper to record the result of a validation check and optionally raise an error.
+
+        This function creates a structured output of a validation check and appends this to self.results.
+        Includes the name of the check, whether it was successful, and any message.
+        'raise_error' controls whether a ValueError should be generated immediately.
+
+        Parameters
+        ----------
+        check_name: str
+            Name of the validation check to be reported.
+        success: bool
+            Whether the check was successful/passes.
+        message: str
+            Message associated with the validation result.
+        raise_error: bool, optional, default = False.
+            Whether a ValueEorror should be raised immediately if the check was not successful (if not True, the function simply outputs the result of the test.)
+        
+        Returns
+        -------
+        None
+        
+        Raises
+        ------
+        ValueError
+            If 'raise_error' is True, and the check failed.
+
+        """
+        
         self.results.append({
             "check": check_name,
             "success": success,
