@@ -6,13 +6,13 @@
 5,farm help,odd jobs at farm including fencing and cleaning,,921,,,Deeper ambiguity,"Testing detail for ""farm help"". Lack of data for 4d (ambiguous between 9211, 9212, and 9213)"
 6,farm help,odd jobs at pig farm including fencing and cleaning,,9212,,,Semantic ambiguity,"Testing detail for ""farm help"". Should be specific to 9212 (""pig"" == ""animal"") but might be amiguous depending on matching technique"
 7,farm help,odd jobs at crop farm including fencing and cleaning,,9211,,,,"Testing detail for ""farm help"". Expected specific to 9211"
-8,Data Scientist,"Using software, artificial intelligence and machine learning to analyse and interpret large amounts of data, to provide advice on business or policy decision making",Government,,,,Scheme ambiguity,
+8,Data Scientist,"Using software, artificial intelligence and machine learning to analyse and interpret large amounts of data, to provide advice on business or policy decision making",Government,2120,,,Scheme ambiguity,
 9,coder,"developing, testing and delivering computer code",,2512,,,Semantic ambiguity,"Testing ""coder"" vs ""programmer"""
 10,programmer,developing software,,2512,,,Semantic ambiguity,"Testing ""coder"" vs ""programmer"""
 11,hairdresser,cutting hair,Self employed,5141,,,,Near-exact match (plural vs singular)
 12,barber,haircuts,,5141,,,Exact match,
 13,manager of hotel,supervising hotel staff,Hospitality,1411,,,,"Explicit excluded from 5151 (Cleaning and housekeeping supervisors); approximate exact match ""Hotel manager""."
-14,Brewery manager,Managing a beer brewery. Supervising staff and production.,,1314,,,Semantic ambiguity,"No explicit inclusion of ""brewery"" in scheme. May be challenging without added semantic context."
+14,Brewery manager,Managing a beer brewery. Supervising staff and production.,,1321,,,Semantic ambiguity,"No explicit inclusion of ""brewery"" in scheme. May be challenging without added semantic context."
 15,Ecological Consultant,undertaking research and surveys to provide advice on the effect of construction and development projects on the natural environment and species. Reporting to nature conservation agencies and planning authorities. Preparing environmental impact assessments and habitat management plans. Planning and running ecological surveys.,,2133,,,,Testing details in task description
 16,Ecological Consultant,wind farm surveys,,2133,,,,Testing details in task description
 17,pastoral administrator at catholic church,supporting spiritual leadership,,334,,,Deeper ambiguity,Ambiguous between 3343 and 3341 without further detail on role/responsibilities
@@ -41,12 +41,12 @@
 40,Barbar,Running barbarshop,,5141,,,Input issue,Test of misspelled input. Interpretable given high level of semantic reasoning.
 41,Car mechanic,Fixing vehicles,,7231,,,,
 42,Spray painter,garage,,7132,,,,
-43,Assistant ranger,"Monitoring wildlife, protecting national park access, leading tours",Tourism,5122,,,Deeper ambiguity,Potentially uncodeable: ambiguos between 2133 and 5112 given input and scheme.
+43,Assistant ranger,"Monitoring wildlife, protecting national park access, leading tours",Tourism,5113,,,Deeper ambiguity,"Potentially uncodeable: ambiguos between 2133, 5113 given input and scheme."
 44,Assistant warden,"Monitoring wildlife, supporting management and protection of national park",,2133,,,Deeper ambiguity,"Note ""assistant warden"" above."
 45,Diplomat,,Government,1112,,,,Not literally covered in scheme - would require significant level of semantic understanding
 46,Diplomat,Negotiating foreign policy affairs. Briefing ministers.,Government,1112,,,,Not literally covered in scheme - requires some level of semantic understanding
 47,Social researcher,Running research programme on gender biases in policy making,University,2632,,,,
-48,Strategic risk consultant,,Insurance,2121,,,Deeper ambiguity,"Potentially uncodeable, given lack of input: e.g. could be 2121, 2421 or 2413"
+48,Strategic risk consultant,,Insurance,4321,,,Deeper ambiguity,"Potentially uncodeable, given lack of input: e.g. could be 4321, 1346, 3315 or 1349"
 49,Commercial farmer,"Growing crops, raising cattle, selling products wholesale",Agriculture,6130,,,,
 50,Domestic worker,"cleaning, ironing",,9111,,,,
 51,Cleaner,cleaner working for cleaning agency,,9112,,,Scheme ambiguity,
