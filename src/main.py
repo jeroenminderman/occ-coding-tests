@@ -1,5 +1,7 @@
 import pandas as pd
 from validator import CheckBenchmarkData
+from utils import count_matches
+from oc3i import Coder
 
 ISCO_DATA_FILE = "data/ISCO-08-scheme.xlsx"
 BENCHMARK_DATA_FILE = "data/isco_benchmark_data.csv"
@@ -23,3 +25,25 @@ validator.check_allowed_values("TYPE", allowed_types)
 
 report = validator.get_report()
 print(report)
+
+if not report["message"].eq("OK").all():
+    raise ValueError("Some validation checks on benchmark data failed, bailing out, sorry!")
+
+# Initialise the coder with the desired coding scheme (here ISCO):
+coder = Coder(scheme = "isco")
+
+# Code benchmark data using oc3i:
+coded_benchmark = coder.code_data_frame(benchmark_dat, 
+                                        title_column = "TITLE", 
+                                        description_column = "TASKS", 
+                                        sector_column = "INDUSTRY")
+
+# Count number of matches in coded data (currently assuming one [manual code] to many [predictions])
+count_matches(coded_benchmark, match_col="MANUAL_ISCO1", 
+              prediction_cols= ["prediction 1", "prediction 2", "prediction 3"], 
+              output="proportion")
+
+
+
+
+
