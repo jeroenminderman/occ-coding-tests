@@ -1,6 +1,9 @@
 ---
+title: "Synthetic example data for occupation coding"
 format:
   html:
+    toc: true
+    toc-depth: 4
     default-language: python
 jupyter: python3
 execute:
@@ -9,13 +12,13 @@ execute:
   default-language: python
 ---
 
-## Background and context of example data
+## Background and context
 
 This repository includes a data file containing example text descriptions of occupations (including tasks, industry etc), coded to the ISCO-08 International Standard Classification of Occupations scheme.  
 
 **These data are synthetic. However, the examples are based on and inspired by the kind of text inputs we have seen in real-world examples**. 
 
-### Typical context of occupation data collection & coding
+### Typical data collection & coding
 
 Data on respondents' occupations are typically collected in national surveys including e.g. national Labour Force Surveys or Censuses. In such surveys enumerators or field workers record the answers to questions like "*How would you describe the job you have done in the last X months*" and "*What tasks did this job involve*". The answer to these questions is typically recorded as short text strings (often not more than a few words).  
 
@@ -23,13 +26,13 @@ On the basis of these text inputs, either the same enumerators, or clerical code
 
 Depending on the agreed process, if the text description is ambiguous relative to the coding scheme, more than one candidate code might be assigned.
 
-### Example data included here
+### Data included here
 
 In the example data, based on a combination of the job title, job description and industry description, at least one ISCO code is assigned as accurately as possible, and where relevant, a comment has been included.  
 
 In addition, the example data is grouped according to "Type". This is intended to allow examples to be classified according to a variety of potential issues when assigning codes. These classes are intended to flag example cases that are ambiguous in some way, or have significant issues (like spelling mistakes in input). In effect, such examples are explicitly included to reflect real-world challenges when coding input data - providing a route to test performance of various coding tools given different types of challenges.
 
-### Why use synthetic benchmark data?
+### Why synthetic benchmark data?
 
 To allow unbiased comparison of coding accuracy (e.g. of different coding tools), it is key to test outputs on common benchmark data.  
 While in an ideal world, this would use "real world" census data that has been manually coded by clerical coders, we are not aware of such a data set that is both publicly accessible and has been validated thoroughly (i.e. cross-coded by different coders, and revised as needed). Even if available using such real-world data does not allow for any control over, or analysis of, different potential issues with the input data: e.g. flagging of ambiguous cases as set out below.  
@@ -43,7 +46,7 @@ Thus, the example data included in this repository has two different intended pu
 > While these data are synthetic, the intent is to make them reflect real-world scenarios as closely as possible. Thus, the examples deliberately include not only cases that are expected to be easy/straightforward to code, but also ones that are deliberately intended to be challenging - while being explicit about the reasons for this.  
 **We stress that, despite the advantages over real-world data listed above, this synthetic data approach does have limitations, and we encourage review of and feedback of the example data, particularly in terms of how it reflect real-world samples.**
 
-## Contributing more examples
+## Contributing examples
 
 We welcome suggested additions to these example data. Indeed, the bigger the benchmark data set, the better any validation could be. Any proposed additions or changes should be made by making changes to the example file and including these in a formal Pull Request to the repository code.  
 
@@ -53,7 +56,7 @@ As a minimum, when adding new examples, please include a unique sequential ID nu
 When proposing additions please ensure you carefully consider the purpose and take note of the format requirements set out below.  
 Any additions will be reviewed before inclusion in the `main` branch of the repo and the authors reserve the right to reject additions and do not commit to specifying reasons for this.**
 
-## Example data format & structure
+## Data format & structure
 
 The example data file is in CSV format to maximise accessibility, interchangeability, while minimising potential cross-platform formatting issues.  
 The file has strict formatting requirements: these are enforced using validation code, and any changes or additions to the data require validation to be passed before further code is run. For details see sections below, but in general:

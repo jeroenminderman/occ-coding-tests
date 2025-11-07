@@ -1,10 +1,49 @@
 ---
-title: "occ-coding-tests documentation"
-format: html
+title: "Introduction"
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: true
+    default-language: python
 execute:
   enabled: true
   echo: true
   default-language: python
 ---
 
-Hello.
+With this repository, we aim to provide a demonstration of:  
+
+1. How different coding tools can be used to code descriptions of occupations to a standardised coding scheme like ISCO-08.  
+
+2. The (relative) performance of such coding tools, benchmarked against a common example data set.  
+
+# Background and context
+
+## What is "occupation coding"
+
+Data on respondents' occupations are typically collected by National Statistics Organisations (NSOs) in a variety of surveys, including e.g. national Labour Force Surveys or Censuses. In such surveys, enumerators or field workers record the answers to questions like "*How would you describe the job you have done in the last X months*" and "*What tasks did this job involve*". The answer to these questions is typically recorded as short text strings (often not more than a few words).  
+
+On the basis of these text inputs, either the same enumerators, or clerical coders following receipt of the data, are expected to assign at least one suitable code from the coding scheme used (here, ISCO-08). Such coding schemes are set up to provide classification of job descriptions to a standardised scheme, allowing consistent statistical reporting, as well as potential for international comparability. ISCO-08 is the international standard for this, but many countries use bespoke coding schemes that are partly or wholly based on ISCO (for example, the UK uses a national scheme called SOC, whereas the Namibian scheme is referred to as NASCO).
+
+Depending on the agreed process, if the text description is ambiguous relative to the coding scheme, more than one candidate code might be assigned.
+
+## Common challenges
+
+Reliance on trained enumerators, process adherence, validation - even if all perfect, inconsistencies are possible particularly given field considerations and text ambiguity.
+
+## Purpose of coding tools in general
+
+Code-assist rather than fully autocode. Improving validation/QA efficiency. Standardisation of coding approach relative to coding scheme.
+
+# Coding tools considered here
+
+occupationcoder-international, classifai
+
+## How coding tools compare (technical approach)
+
+fuzzy string matching vs vector search using language models.
+
+## Coding tool performance comparison
+
+See HERE and HERE.

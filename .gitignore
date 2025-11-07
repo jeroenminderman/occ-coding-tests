@@ -284,6 +284,8 @@ vignettes/*.pdf
 
 # Temporarily limiting rendered HTML files from Quarto docs
 docs/_site/
+docs/.quarto/
+docs/.gitignore
 
 # translation temp files
 po/*~

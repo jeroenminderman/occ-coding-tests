@@ -2,10 +2,12 @@ project:
   type: website
 
 website:
-  title: "occ-coding-tests"
-  navbar:
-    left:
+  title: "Occupation coding tools:<br> benchmark data & performance"
+  sidebar:
+    style: docked
+    search: false
+    contents:
       - text: Home
         href: index.qmd
-      - text: Example (benchmark) data
+      - text: Example data
         href: example_data.qmd
