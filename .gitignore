@@ -282,8 +282,8 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# pkgdown site
-docs/
+# Temporarily limiting rendered HTML files from Quarto docs
+docs/_site/
 
 # translation temp files
 po/*~

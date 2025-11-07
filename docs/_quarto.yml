@@ -1,0 +1,11 @@
+project:
+  type: website
+
+website:
+  title: "occ-coding-tests"
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      - text: Example (benchmark) data
+        href: example_data.qmd

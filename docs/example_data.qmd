@@ -1,0 +1,138 @@
+---
+format:
+  html:
+    default-language: python
+jupyter: python3
+execute:
+  enabled: true
+  echo: false
+  default-language: python
+---
+
+## Background and context of example data
+
+This repository includes a data file containing example text descriptions of occupations (including tasks, industry etc), coded to the ISCO-08 International Standard Classification of Occupations scheme.  
+
+**These data are synthetic. However, the examples are based on and inspired by the kind of text inputs we have seen in real-world examples**. 
+
+### Typical context of occupation data collection & coding
+
+Data on respondents' occupations are typically collected in national surveys including e.g. national Labour Force Surveys or Censuses. In such surveys enumerators or field workers record the answers to questions like "*How would you describe the job you have done in the last X months*" and "*What tasks did this job involve*". The answer to these questions is typically recorded as short text strings (often not more than a few words).  
+
+On the basis of these text inputs, either the same enumerators, or clerical coders following receipt of the data, are expected to assign at least one suitable code from the coding scheme used (here, ISCO-08). Such coding schemes are set up to provide classification of job descriptions to a standardised scheme, allowing consistent statistical reporting. ISCO-08 is the international standard for this, but many countries use bespoke coding schemes that are partly or wholly based on ISCO.
+
+Depending on the agreed process, if the text description is ambiguous relative to the coding scheme, more than one candidate code might be assigned.
+
+### Example data included here
+
+In the example data, based on a combination of the job title, job description and industry description, at least one ISCO code is assigned as accurately as possible, and where relevant, a comment has been included.  
+
+In addition, the example data is grouped according to "Type". This is intended to allow examples to be classified according to a variety of potential issues when assigning codes. These classes are intended to flag example cases that are ambiguous in some way, or have significant issues (like spelling mistakes in input). In effect, such examples are explicitly included to reflect real-world challenges when coding input data - providing a route to test performance of various coding tools given different types of challenges.
+
+### Why use synthetic benchmark data?
+
+To allow unbiased comparison of coding accuracy (e.g. of different coding tools), it is key to test outputs on common benchmark data.  
+While in an ideal world, this would use "real world" census data that has been manually coded by clerical coders, we are not aware of such a data set that is both publicly accessible and has been validated thoroughly (i.e. cross-coded by different coders, and revised as needed). Even if available using such real-world data does not allow for any control over, or analysis of, different potential issues with the input data: e.g. flagging of ambiguous cases as set out below.  
+
+Thus, the example data included in this repository has two different intended purposes:  
+
+1. Provision of a common benchmark of text data pre-coded to ISCO codes, to allow comparisons of the efficacy of different (semi-automated) coding tools.  
+
+2. Provision of a route to analyse performance of such coding tools given different potential challenges (e.g. input ambiguity, see below).  
+
+> While these data are synthetic, the intent is to make them reflect real-world scenarios as closely as possible. Thus, the examples deliberately include not only cases that are expected to be easy/straightforward to code, but also ones that are deliberately intended to be challenging - while being explicit about the reasons for this.  
+**We stress that, despite the advantages over real-world data listed above, this synthetic data approach does have limitations, and we encourage review of and feedback of the example data, particularly in terms of how it reflect real-world samples.**
+
+## Contributing more examples
+
+We welcome suggested additions to these example data. Indeed, the bigger the benchmark data set, the better any validation could be. Any proposed additions or changes should be made by making changes to the example file and including these in a formal Pull Request to the repository code.  
+
+As a minimum, when adding new examples, please include a unique sequential ID number, a job TITLE, and at least one expected ISCO code which should be assigned to it (MANUAL_ISCO1). For further detail, see "Example data format & structure" below.
+
+> **Because these data are used to test and compare coding approaches, it is vital such data (1) adhere to the core purpose/aims specified above; and (2) formatted correctly.  
+When proposing additions please ensure you carefully consider the purpose and take note of the format requirements set out below.  
+Any additions will be reviewed before inclusion in the `main` branch of the repo and the authors reserve the right to reject additions and do not commit to specifying reasons for this.**
+
+## Example data format & structure
+
+The example data file is in CSV format to maximise accessibility, interchangeability, while minimising potential cross-platform formatting issues.  
+The file has strict formatting requirements: these are enforced using validation code, and any changes or additions to the data require validation to be passed before further code is run. For details see sections below, but in general:
+
+- A fixed number of expected columns (see below): if more or less columns are found, validation fails.  
+- Exact column naming as below  
+- Some columns can't have missing values  
+- Given ISCO codes have to be valid (ie included in the coding scheme)  
+
+```{python, echo: false}
+import pandas as pd
+
+# Sample data
+data = {
+    "Column": ["ID", "TITLE", "TASKS", "INDUSTRY", "MANUAL_ISCO1", "MANUAL_ISCO2", "MANUAL_ISCO3", "TYPE", "COMMENT"],
+    "Description": ["Unique sequential ID number for example", "Text input: short job title", "Text input: longer description of job and tasks involved", "Text input: description of industry for the job", "First candidate ISCO-08 code (most preferred)", "Second candidate ISCO-08 code", "Third candidate ISCO-08 code", "Type of example (see detail below)", "Comments"],
+    "Missing allowed?": ["No", "No", "Yes", "Yes", "No", "Yes", "Yes", "Yes", "Yes"],
+    "Value": ["Integer","Free text","Free text","Free text","Valid ISCO code (1-4 digits)","Valid ISCO code (1-4 digits)","Valid ISCO code (1-4 digits)","One of a fixed number of types (see below), or missing (empty)","Free text"]
+}
+
+df = pd.DataFrame(data)
+#df.style.set_caption("Styled table").format("{:.1f}").hide(axis="index")
+df.style.set_caption("Example data columns and data types") \
+        .hide(axis="index").set_properties(**{"text-align": "left"})
+```
+
+### Example types
+
+In the example data file, the TYPE value should be one of a fixed number of classes (see table below). It can also be left blank/empty - implying that no issues are expected with the "codeability" of the example.
+
+```{python, echo: false}
+import pandas as pd
+
+# Sample data
+data = {
+    "Type": ["Exact match", "Exact match fail", "Semantic ambiguity", "Scheme ambiguity", "Deeper ambiguity", "Input issue", ""],
+    "Description": [
+      "Expecting an 'exact match': job title is explicitly included in the ISCO-08 scheme",
+      "Expecting an exact match as above, but not coded as such (ie. strictly speaking, a coding error)",
+      "Text inputs combined are semantically ambiguous (e.g. lack of detail means different codes could apply)",
+      "Ambiguity caused (predominantly) by structure/detail in the scheme, rather than the text inputs per se",
+      "A combination of different types of ambiguity of inputs and scheme",
+      "Issues like misspellings in text inputs",
+      "Blank values for type means no coding issues are expected"
+    ]
+}
+
+df = pd.DataFrame(data)
+#df.style.set_caption("Styled table").format("{:.1f}").hide(axis="index")
+df.style.set_caption("Example data columns and data types") \
+        .hide(axis="index").set_properties(**{"text-align": "left"})
+```
+
+#### "Exact" matches
+
+The ISCO-08 scheme includes examples of job titles that are expected to be directly associated with specific classes/codes. For example, "Ambassador" is included as a match to "Senior Government Officials (1112)"; and "Environmental analyst" is included as a match to "Environmental Engineers (2143)".  
+
+> **Exact match**. Cases where an exact match is *expected* based on the TITLE given and specification in the coding scheme, should be classed as TYPE "*Exact match*" in the example data.  
+
+> **Exact match fail**. Cases (reflecting real-world examples) where enumerators or clerical coders have not have assigned expected exact matches strictly correctly. 
+
+The latter type is to allow ability to distinguish between issues due to manual coding (enumerator/clerical coder mistakes), and failure of a coding tool to select the correct code, given such an expected match. It is worth stressing that in such cases, any discrepancy between the manual code given and the one(s) suggested by a coding tool could be due to *either* a mistake on the part of the enumerator, or a failure of the coding tool. In testing and validation of different tools, these TYPE classes provide a potential route to disambiguate such cases.
+
+#### Ambiguous cases
+
+In many practical cases, text input describing occupations can be ambiguous in terms of classification to the scheme.  
+
+This is most apparent in cases where detail is lacking in text inputs. Extreme examples are "farmer" or "teacher": in both cases, the scheme requires significantly more detail to allow confident coding to any level of granularity in the scheme. For "farmer", for coding to 4 digits, ISCO-08 expects differentiation between e.g. livestock and crop farmers; or subsistence and commercial farmer. For "teacher", 4-digit coding requires detail on the level of education, e.g. primary or secondary.  
+
+Similar to the 'exact match' example types above, the TYPE classes in the examples attempts to distinguish between three (partly overlapping/subjective) subtypes as listed below. Note that the assignment of these is (to some extent) open to interpretation, but an attempt is made to distinguish these to help potential for deeper analyses and comparisons.
+
+> **Semantic ambiguity**. These are cases where, given the text input, some level of semantic "understanding" is required to code to the correct class.  
+For example, "Kapana seller" is understood in some African countries as being a street food seller, i.e. 5212 in ISCO-08. However, as the scheme does not include any specific reference to this, this input requires broader semantic and contextual understanding of the meaning of this phrase. Whereas some coding tools (e.g. ClassifAI) may use language models that provide such context; others (e.g. occupationcoder-international) rely on string similarity, which would fail on this match as it does not include that broader context.
+
+> **Scheme ambiguity**. These are cases where the ambiguity is primarily due to limitations of the coding scheme, rather than the detail in the text input.  
+For example, "data scientist" as title alongside a fairly detailed description of the job is challenging to assign to a specific code in the scheme. This is because this class of job is simply not included in the scheme and potentially overlaps multiple classes. So, the assignment will need to be a compromise depending on the nuance in the text input. As with semantic ambiguity, in some limited cases, tools that are based on language models as opposed to (fuzzy) string matchers may help in these cases, but they are still likely to be limited in terms of potential for disambiguation.
+
+> **Deeper ambiguity**. These are cases where there is ambiguity of the types described above, but it is unclear which specifically or the issue is a combination of factors. Such cases are likely to be challenging to code regardless of the approach used: in some cases, correct strict application of the coding scheme may require limiting coding to three- or two-digit levels (less granularity).
+
+#### Input issues
+
+These are cases where the likely coding issue is due to input errors such as spelling mistakes. For example, "barbar" instead of "barber". While this should be codeable with a level of contextual understanding of language, more basic tools such as fuzzy- or string matchers will struggle.
