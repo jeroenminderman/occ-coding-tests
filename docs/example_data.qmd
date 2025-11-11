@@ -4,6 +4,7 @@ format:
   html:
     toc: true
     toc-depth: 4
+    toc-expand: true
     default-language: python
 jupyter: python3
 execute:
@@ -18,24 +19,19 @@ This repository includes a data file containing example text descriptions of occ
 
 **These data are synthetic. However, the examples are based on and inspired by the kind of text inputs we have seen in real-world examples**. 
 
-### Typical data collection & coding
-
-Data on respondents' occupations are typically collected in national surveys including e.g. national Labour Force Surveys or Censuses. In such surveys enumerators or field workers record the answers to questions like "*How would you describe the job you have done in the last X months*" and "*What tasks did this job involve*". The answer to these questions is typically recorded as short text strings (often not more than a few words).  
-
-On the basis of these text inputs, either the same enumerators, or clerical coders following receipt of the data, are expected to assign at least one suitable code from the coding scheme used (here, ISCO-08). Such coding schemes are set up to provide classification of job descriptions to a standardised scheme, allowing consistent statistical reporting. ISCO-08 is the international standard for this, but many countries use bespoke coding schemes that are partly or wholly based on ISCO.
-
-Depending on the agreed process, if the text description is ambiguous relative to the coding scheme, more than one candidate code might be assigned.
-
 ### Data included here
 
-In the example data, based on a combination of the job title, job description and industry description, at least one ISCO code is assigned as accurately as possible, and where relevant, a comment has been included.  
+In the example data, based on a combination of the job title, job description and industry description, at least one ISCO code was assigned as accurately as possible, and where relevant, a comment has been included.  
 
 In addition, the example data is grouped according to "Type". This is intended to allow examples to be classified according to a variety of potential issues when assigning codes. These classes are intended to flag example cases that are ambiguous in some way, or have significant issues (like spelling mistakes in input). In effect, such examples are explicitly included to reflect real-world challenges when coding input data - providing a route to test performance of various coding tools given different types of challenges.
 
 ### Why synthetic benchmark data?
 
-To allow unbiased comparison of coding accuracy (e.g. of different coding tools), it is key to test outputs on common benchmark data.  
-While in an ideal world, this would use "real world" census data that has been manually coded by clerical coders, we are not aware of such a data set that is both publicly accessible and has been validated thoroughly (i.e. cross-coded by different coders, and revised as needed). Even if available using such real-world data does not allow for any control over, or analysis of, different potential issues with the input data: e.g. flagging of ambiguous cases as set out below.  
+**To allow unbiased comparison of coding accuracy (e.g. of different coding tools), it is key to test outputs on common benchmark data.**  
+
+While in an ideal world, accuracy tests would use "real world" census data that has been manually coded by clerical coders, we are not aware of such a data set that is both (1) publicly accessible and (2) has been validated thoroughly (i.e. cross-coded by different coders, and revised as needed). _Even if available_, using such real-world data does not allow for any control over, or analysis of, different potential issues with the input data: e.g. flagging of ambiguous cases as set out below.  
+
+#### Aims
 
 Thus, the example data included in this repository has two different intended purposes:  
 
@@ -44,7 +40,7 @@ Thus, the example data included in this repository has two different intended pu
 2. Provision of a route to analyse performance of such coding tools given different potential challenges (e.g. input ambiguity, see below).  
 
 > While these data are synthetic, the intent is to make them reflect real-world scenarios as closely as possible. Thus, the examples deliberately include not only cases that are expected to be easy/straightforward to code, but also ones that are deliberately intended to be challenging - while being explicit about the reasons for this.  
-**We stress that, despite the advantages over real-world data listed above, this synthetic data approach does have limitations, and we encourage review of and feedback of the example data, particularly in terms of how it reflect real-world samples.**
+**We stress that, despite the advantages over real-world data listed above, this synthetic data approach does have limitations, and we encourage review of and feedback on the example data, particularly in terms of how it reflect real-world samples.**
 
 ## Contributing examples
 
@@ -85,7 +81,11 @@ df.style.set_caption("Example data columns and data types") \
 
 ### Example types
 
-In the example data file, the TYPE value should be one of a fixed number of classes (see table below). It can also be left blank/empty - implying that no issues are expected with the "codeability" of the example.
+In the example data file, the TYPE value should be one of a fixed number of classes (see table below). It can also be left blank/empty - implying that no issues are expected with the "codeability" of the example.  
+
+TYPE is included in the example file to allow analyses of potential mismatches between the manually assigned codes, and the potential predictions by coding tools. It is important to stress that such mismatches can occur due to a variety of reasons - they may reflect genuine mistakes on the part of the enumerators or clerical coders; they may reflect ambiguity in the text inputs and therefore imply a level of subjectivity in the choice of code; or it may be due to ambiguity in the coding scheme itself. 
+
+While the example data set is intended to be coded as accurately as possible (ie. excluding straight errors in coding), the TYPE value in the data flags cases where we think mismatches between manual and predicted codes are still likely to happen (due to, for example, ambiguity in the input - see below). In addition, different TYPE classes provide some information on *why* we think that is the case.
 
 ```{python, echo: false}
 import pandas as pd
@@ -117,8 +117,6 @@ The ISCO-08 scheme includes examples of job titles that are expected to be direc
 > **Exact match**. Cases where an exact match is *expected* based on the TITLE given and specification in the coding scheme, should be classed as TYPE "*Exact match*" in the example data.  
 
 > **Exact match fail**. Cases (reflecting real-world examples) where enumerators or clerical coders have not have assigned expected exact matches strictly correctly. 
-
-The latter type is to allow ability to distinguish between issues due to manual coding (enumerator/clerical coder mistakes), and failure of a coding tool to select the correct code, given such an expected match. It is worth stressing that in such cases, any discrepancy between the manual code given and the one(s) suggested by a coding tool could be due to *either* a mistake on the part of the enumerator, or a failure of the coding tool. In testing and validation of different tools, these TYPE classes provide a potential route to disambiguate such cases.
 
 #### Ambiguous cases
 
