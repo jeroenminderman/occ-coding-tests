@@ -48,7 +48,7 @@ We welcome suggested additions to these example data. Indeed, the bigger the ben
 
 As a minimum, when adding new examples, please include a unique sequential ID number, a job TITLE, and at least one expected ISCO code which should be assigned to it (MANUAL_ISCO1). For further detail, see "Example data format & structure" below.
 
-> **Because these data are used to test and compare coding approaches, it is vital such data (1) adhere to the core purpose/aims specified above; and (2) formatted correctly.  
+> **Because these data are used to test and compare coding approaches, it is vital such data (1) adhere to the core purpose/aims specified above; and (2) are formatted correctly.  
 When proposing additions please ensure you carefully consider the purpose and take note of the format requirements set out below.  
 Any additions will be reviewed before inclusion in the `main` branch of the repo and the authors reserve the right to reject additions and do not commit to specifying reasons for this.**
 
@@ -132,7 +132,7 @@ For example, "Kapana seller" is understood in some African countries as being a 
 > **Scheme ambiguity**. These are cases where the ambiguity is primarily due to limitations of the coding scheme, rather than the detail in the text input.  
 For example, "data scientist" as title alongside a fairly detailed description of the job is challenging to assign to a specific code in the scheme. This is because this class of job is simply not included in the scheme and potentially overlaps multiple classes. So, the assignment will need to be a compromise depending on the nuance in the text input. As with semantic ambiguity, in some limited cases, tools that are based on language models as opposed to (fuzzy) string matchers may help in these cases, but they are still likely to be limited in terms of potential for disambiguation.
 
-> **Deeper ambiguity**. These are cases where there is ambiguity of the types described above, but it is unclear which specifically or the issue is a combination of factors. Such cases are likely to be challenging to code regardless of the approach used: in some cases, correct strict application of the coding scheme may require limiting coding to three- or two-digit levels (less granularity).
+> **Deeper ambiguity**. These are cases where there is ambiguity of the types described above, but it is unclear which specifically; or the issue is a combination of factors. Such cases are likely to be challenging to code regardless of the approach used: in some cases, correct strict application of the coding scheme may require limiting coding to three- or two-digit levels (less granularity).
 
 #### Input issues
 

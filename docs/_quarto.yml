@@ -11,3 +11,5 @@ website:
         href: index.qmd
       - text: Example data
         href: example_data.qmd
+      - text: Demo & performance
+        href: demos_performance.qmd

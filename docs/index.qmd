@@ -32,19 +32,20 @@ Depending on the agreed process, if the text description is ambiguous relative t
 
 ## Common challenges
 
-Traditionally, appropriate classification of job descriptions to codes/classes relies on appropriate application of the coding scheme by enumerators or clerical coders; both in terms of their knowledge of its content and coverage, as well as its limitations.  
+Traditionally, appropriate classification of job descriptions to codes/classes relies on correct application of the coding scheme by enumerators or clerical coders; both in terms of their knowledge of its content and coverage, as well as its limitations.  
 
-This heavily relies on appropriate training and maintenance of skills, and while not a trivial task, this is often underresourced. This can lead to data quality challenges. For example, it is vital that field enumerators ask follow up questions if initial answers are too limited in detail to allow accurate coding to a class in the scheme. 
+This heavily relies on training and maintenance of skills, and while not a trivial task, this is often underresourced. This can lead to data quality challenges. For example, it is vital that field enumerators ask follow up questions if initial answers are too limited in detail to allow accurate coding to a class in the scheme. 
 Similarly, if coding is done by clerical coders when data has already been collected, it is important for them to have a solid understanding of the limitations of the data, the scheme, and the end use of the data set to allow appropriate coding given the data available. This often involves trade-offs, selection of multiple potentially suitable candidate codes, and ensuring consistent processes are followed.
 
-Conistency is key, but also the main challenge. In many cases, even when appropriately trained, different coders may code inputs differently when they are  ambiguous or when the scheme is lacking in detail.  
+Conistency is key, but also the main challenge.  
+In many cases, even when appropriately trained, different coders may code inputs differently when they are  ambiguous or when the scheme is lacking in detail.  
 Thus, in an ideal world, extensive validation takes place. This can mean multiple clerical coders coding the same subsets of data in a "double blind" fashion, and revising cases where different coders have given different answers. However, this can be extremely resource intensive in many real-world scenarios where surveys (e.g. national censuses) consist of many millions of records.
 
 ## Purpose of coding tools in general
 
 Occupation coding tools aim to reduce the workload involved in coding records: in particular in the context of validation checks.  
 
-It is worth stressing that here, we argue that such tools should always be viewed as "coding-assist tools", as opposed to "automatic coders". From the discussion presented throughout these pages it should be clear that (given limited input data) much of the ambiguity faced by human coders remains just as ambiguous to pretty much any coding tool. Some automation tools will struggle more than others, and keeping a "human in the loop" is vital to ensure data quality, particularly where the end product is business critical.  
+It is worth stressing that here, we argue that such tools should always be viewed as "coding-assist tools", as opposed to "automatic coders". From the discussion presented throughout these pages it should be clear that (given limited input data) much of the ambiguity faced by human coders remains just as ambiguous to pretty much any coding tool. Put another way, **typically the main challenge is limitations in the input data and granularity of the coding schemes, not the quality of the coding process itself (whether done by a human or otherwise)**. Some automation tools will struggle more than others, and keeping a "human in the loop" is vital to ensure data quality, particularly where the end product is business critical.  
 
 Our assumption with all of the process and analyses presented here is that these tools will be used when manually assigned codes are already available, and they are used to check and potentially revise assigned codes, based on alternatives presented. While it would be technically possible to embed these coding tools in commonly used data collection tools (e.g. [CSPro](https://www.census.gov/data/software/cspro.html)), we here focus on their role in data processing rather than collection.  
 
@@ -60,13 +61,13 @@ Both of these use distinctly different technical approaches, and because they ar
 
 ## occupationcoder-international
 
-[occupationcoder-international](https://github.com/datasciencecampus/occupationcoder-international) is a TF-IDF "fuzzy matching" tool, extending an existing tool for the UK SOC scheme to the international ISCO one.  
+[occupationcoder-international](https://github.com/datasciencecampus/occupationcoder-international) is a string "fuzzy matching" tool, extending an existing tool for the UK SOC scheme to the international ISCO one.  
 
-In brief, occupationcoder-international compares a given text input (e.g. XXXX) to each of the class descriptions in the ISCO scheme, and identifies which are most closely matched from a text-similarity perspective, suggesting the closest matches as the most appropriate class.  
+In brief, occupationcoder-international compares a given text input to each of the class descriptions in the ISCO scheme, and identifies which are most similar from a pure text perspective, suggesting the closest matches as the most appropriate class.  
 
-More specifically, it uses TF-IDF to turn text descriptions of scheme classes into numeric vectors that identify words particularly associated with different classes. By doing the same with the text inputs, and ranking its similarity to those for the scheme classes, it returns the "most suitable" matches.  
+More specifically, it uses [TF-IDF](https://scikit-learn.org/stable/modules/feature_extraction.html#tfidf-term-weighting) to turn text descriptions of scheme classes into numeric vectors that identify words particularly associated with different classes. By doing the same with the text inputs, and ranking its similarity to those for the scheme classes, it returns the "most suitable" matches.  
 
-Importantly, it should be stressed that -at its core- this process works purely with word frequency/commonality. There is no (explicit) consideration or "understanding" of context, and accuracy of matches rely purely on sufficient detail being available in both the text input and the class descriptions in the scheme - and the latter descriptions in particular being "sufficiently distinct".  
+Importantly, it should be stressed that -at its core- this process works purely with word frequency/commonality. There is no (explicit) consideration or "understanding" of context, and accuracy of matches rely purely on sufficient detail being available in both the text input and the class descriptions in the scheme, and the being sufficiently distinct.  
 
 Obvious limitations aside, this approach is well established (TF-IDF is a widely used technique in Natural Language Processing), is quick to implement, and in most scenarios is very fast.
 
@@ -81,7 +82,7 @@ Obvious limitations aside, this approach is well established (TF-IDF is a widely
 The key difference is that classifai uses pre-trained (Large) Language Models to do this vectorisation. Such models produce context-aware embeddings, which means that when used as vectorisers, they can provide some level of "understanding" of context.  
 For example, a good pre-trained Language Model shown the phrase "tuktuk" would likely associate this with "motorised rickshaw driver" or similar. By contrast, unless "tuktuk" is explicitly given in the coding scheme, a TF-IDF based approach would fail, because there simply is no word-based link between this input phrase and any class in the scheme.  
 
-While this may represent a significant advantage, it should be noted that the use of such pre-trained models can be more computationally intensive (but, depending on implementation, this can be managed), and access to them may be restricted in certain circumstances.
+While the ability to consider context may represent a significant advantage, it should be noted that the use of pre-trained models as vectorisers can be restricted in certain circumstances, and their use can be more computationally intensive compared to TF-IDF (but, depending on implementation, this can be effectively managed).
 
 ### Application and performance
 

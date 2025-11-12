@@ -1,0 +1,117 @@
+---
+title: "Example applications and performance"
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: true
+    default-language: python
+jupyter: python3
+execute:
+  enabled: true
+  echo: true
+  default-language: python
+---
+
+The following serves as a demonstration/tutorial of how to apply the occupation coding tools on some example data, including full code examples as a tutorial/walkthrough. We also show some tests to compare tool predictions to manually assigned codes in the example data, to serve as basic accuracy tests.  
+
+Further background to the process and techiques used are set out in [these pages](index.qmd). For details on the example data used, [see here](example_data.qmd).  
+
+All the following examples assume you have a working Python install on your system.  
+
+# occupationcoder-international
+
+## Initial set up
+
+To install occupationcoder-international, you can install the package directly from its Github repository using `pip`, as set out here.  
+
+We suggest you create and work from a Python virtual environment (venv) to manage package installs cleanly, but this is not strictly required.  
+
+The package comes with a "dictionary" for the ISCO-08 coding scheme, so there is no need to set this up manually.  
+
+## Coding the example data
+
+While occupationcoder-international comes with a script that allows it to be run on an input file directly from the command line, we here demonstrate its use in Python code, as a module. We assume this is the most likely approach for embedding this tool into existing (Python) pipelines.  
+
+To load the required modules, set up the coder class, and load the example data, you can do the following:  
+
+```{python, echo: true}
+import pandas as pd
+from oc3i import Coder
+
+# Initialise the coder with the desired coding scheme (here ISCO):
+coder = Coder(scheme = "isco")
+
+# Load the example data (please adjust the file path as needed on your machine)
+example_data = pd.read_csv("../data/isco_benchmark_data.csv", dtype={'MANUAL_ISCO1': str, 'MANUAL_ISCO2': str, 'MANUAL_ISCO3': str})
+example_data.head()
+```
+
+```{python, echo: true}
+# Code the example using all text in the TITLE, TASKS and INDUSTRY columns.
+example_coded = coder.code_data_frame(example_data, 
+                                        title_column = "TITLE", 
+                                        description_column = "TASKS", 
+                                        sector_column = "INDUSTRY")
+example_coded.head()
+```
+
+We can now assess performance of occupationcoder-international, by calculating "accuracy" as the number of cases where the top predicted code matches the manually assigned code exactly:
+```{python, echo: true}
+# Accuracy 1: number of cases where top prediction matches the preferred manually assigned code:
+match1 = (example_coded["MANUAL_ISCO1"] == example_coded["prediction 1"]).sum()
+print(match1)
+```
+Alternatively, we can be less conservative and also consider cases where *either* the top 1, 2 or 3 prediction matches the manually assigned code (i.e. assuming a user uses the tool to suggest potential alternative options):
+```{python, echo: true}
+# Accuracy 2: number of cases where manually assigned code is included in the top 3 predictions:
+match123 = example_coded["MANUAL_ISCO1"].isin(
+                example_coded[["prediction 1", "prediction 2", "prediction 3"]].values.flatten()
+           ).sum()
+print(match123)
+```
+
+To avoid needing to re-run the same calculation every time, we can wrap the above in a short function that also calculates the % of the total:
+```{python, echo: true}
+def matches(dat):
+    match1 = (dat["MANUAL_ISCO1"] == dat["prediction 1"]).sum()
+
+    match123 = dat["MANUAL_ISCO1"].isin(
+                   dat[["prediction 1", "prediction 2", "prediction 3"]].values.flatten()
+               ).sum()
+
+    match1p = (match1/len(dat))*100
+    match123p = (match123/len(dat))*100
+
+    return([f"{match1} ({match1p:.1f}%)", f"{match123} ({match123p:.1f}%)"])
+```
+
+We can now use this function to calculate performance on different subsets of the data.
+For example, we first split the full example data set by TYPE (for a more detailed explanation of these data TYPES, see [here](example_data.qmd)). Specifically, we split by (1) cases where we expect an exact match; (2) cases that should be codeable but not an exact match; (3) cases we expect to be challenging due to ambiguity:
+```{python, echo: true}
+t1 = example_coded[example_coded["TYPE"] == "Exact match"]
+t2 = example_coded[example_coded["TYPE"].isna()]
+t3 = example_coded[example_coded["TYPE"].str.contains('ambigui', case=False, na=False)]
+```
+
+## Accuracy & performance
+
+Now we can use our function above on the full example data set, as well as the subsets, and collate a summary table (note that the code below does not follow best practice; this is deliberate to ensure maximum accessibility):
+```{python, echo: true}
+summary1 = [
+    ["All examples", len(example_coded),matches(example_coded)[0],matches(example_coded)[1]],
+    ["Expected exact match", len(t1), matches(t1)[0],matches(t1)[1]],
+    ["Expected codeable", len(t2), matches(t2)[0],matches(t2)[1]],
+    ["Expected ambiguity", len(t3), matches(t3)[0],matches(t3)[1]]
+]
+pd.DataFrame(summary1, columns = ["Type","Total", "Match to 1","Match in 1-3",])
+```
+
+The above results show that:  
+
+- When considering *all* of the example data **in `{python} matches(example_coded)[0]` of cases, the top prediction from occupationcoder-international agrees with a manually assigned code**. When interpreting a "match" as the manual code being included in the top 3 predictions, this increases to `{python} matches(example_coded)[1]` cases. It is worth stressing this includes all example cases we *a priori* expected to be challenging.  
+- As expected, direct match rates are much lower for known ambiguous cases (`{python} matches(t3)[0]`); but this is much improved by also considering the top 3 predictions (`{python} matches(t3)[1]`).
+- Less informative (as this is a feature of occupationcoder-international, but nevertheless a good sense check), in all cases where we expected an exact match, this is matched correctly.
+
+# classifai
+
