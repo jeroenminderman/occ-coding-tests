@@ -1,2 +1,4 @@
 git+https://github.com/datasciencecampus/occupationcoder-international.git@main
 jupyter
+openpyxl
+quarto-cli
