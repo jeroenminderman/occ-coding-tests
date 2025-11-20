@@ -1,4 +1,4 @@
-git+https://github.com/datasciencecampus/occupationcoder-international.git@main
+git+https://github.com/datasciencecampus/occupationcoder-international.git@dev
 classifai[huggingface] @ git+https://github.com/datasciencecampus/classifAI
 jupyter
 openpyxl
