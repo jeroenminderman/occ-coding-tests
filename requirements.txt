@@ -1,4 +1,5 @@
 git+https://github.com/datasciencecampus/occupationcoder-international.git@main
+classifai[huggingface] @ git+https://github.com/datasciencecampus/classifAI
 jupyter
 openpyxl
 quarto-cli
