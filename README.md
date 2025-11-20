@@ -1,34 +1,27 @@
 # occ-coding-tests: demo and test of occupation coding tools
 
 # Introduction
+
 ## About
+
+**As of November 2023, this repository is under active development: things will change rapidly so please be aware of updates**
+
 This repo aims to (1) demonstrate the use of tools for coding occupation descriptions to the ISCO-08 scheme, and (2) serve as a demonstration of the efficacy "accuracy" of these approaches relative to a common baseline test data set.
-## Installation
 
-### Pre-commit actions
-This repository contains a configuration of pre-commit hooks. These are language agnostic and focussed on repository security (such as detection of passwords and API keys). If approaching this project as a developer, you are encouraged to install and enable `pre-commits` by running the following in your shell:
-   1. Install `pre-commit`:
+## Installation / pre-requisites
+Before rendering the repo documentation (see below), you will need to ensure you have all package dependencies installed. These are specified in the `requirements.txt` file. You can install these dependencies using pip:
+```bash
+pip install -r requirements.txt
+```
 
-      ```
-      pip install pre-commit
-      ```
-   2. Enable `pre-commit`:
+## Use
+The core of this repo is the documentation included in the docs/ folder, generated using Quarto. To build the documentation locally, you will need to have Quarto installed. You can find installation instructions on the [Quarto website](https://quarto.org/docs/get-started/). 
 
-      ```
-      pre-commit install
-      ```
-Once pre-commits are activated, whenever you commit to this repository a series of checks will be executed. The pre-commits include checking for security keys, large files and unresolved merge conflict headers. The use of active pre-commits are highly encouraged and the given hooks can be expanded with Python or R specific hooks that can automate the code style and linting. For example, the `flake8` and `black` hooks are useful for maintaining consistent Python code formatting.
+Once you have Quarto installed, you can build the documentation by running the following command in the root directory of the repo:
+```bash
+quarto render docs/
+```
+This will generate the documentation in the `docs/` folder. You can then open the `index.html` file in your web browser to view the documentation.
 
-**NOTE:** Pre-commit hooks execute Python, so it expects a working Python build.
-
-## Usage
-
-# License
-
-The code, unless otherwise stated, is released under [the MIT Licence][mit].
-
-The documentation for this work is subject to [© Crown copyright][copyright] and is available under the terms of the [Open Government 3.0][ogl] licence.
-
-[mit]: LICENCE
-[copyright]: http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/
-[ogl]: http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+## Example benchmark data & contributions to this
+This repository includes some synthetic benchmark data for testing occupation coding tools, located in the `data/` folder. If you have additional benchmark data that you would like to contribute, please feel free to submit a pull request with your data included in the `data/` folder. Please ensure that your data is properly formatted and includes any necessary documentation. See the [Example Data section](docs/_site/example_data.html) in the documentation for more details on the expected format.
