@@ -23,7 +23,7 @@ All the following examples assume you have a working Python install on your syst
 
 ## Initial set up
 
-To install occupationcoder-international, you can install the package directly from its Github repository using `pip`, as set out here.  
+To install occupationcoder-international, you can install the package directly from its Github repository using `pip`, as set out [here](https://github.com/datasciencecampus/occupationcoder-international#:~:text=Input%20format%22%20onwards.-,Getting%20started,-There%20are%20three). Alternatively, installing the [`requirements.txt`](../requirements.txt) for the present repository will also install everything required.
 
 We suggest you create and work from a Python virtual environment (venv) to manage package installs cleanly, but this is not strictly required.  
 
@@ -115,3 +115,49 @@ The above results show that:
 
 # classifai
 
+## Initial set up
+
+Classifai can be installed either by following the [instructions provided with its repository](https://github.com/datasciencecampus/classifai/) (recommended method); or as of the time of writing this, by installing the [requirements](../requirements.txt) for the present repository (noting that this may change as classifai is under active development).  
+
+Note the following key points:  
+
+1. For the purposes of this demonstration, we are using a pretrained model from Huggingface as the vectoriser for schema and input text. **As this involves downloading a model from the Huggingface website, this assumes you have an appropriate API key set up and referenced in the machine you are using. If this is not done, the following code will fail to run.**  
+2. Classifai provides ways to use range of different models (and different model providers) as vectorisers - please see its documentation on how to use these.
+3. Different models will vary in terms of performance. For the purposes of the initial demonstration here, we only use one; the main idea being the comparison of its performance on benchmark data with the peformance of other tools such as occupationcoder-international. Further work comparing different vectoriser models used by Classifai would be valuable.
+4. The vectorisation of the coding scheme demonstrated below can take a while to run, depending on the hardware used. We suggest that you do this once, store the vector database locally, and when you need to re-use it, you load the stored version rather than re-building in each time. **This is a key way to make the coding as efficient as possible, and each "query" should only take milliseconds to complete, even on modest hardware.  
+
+
+We first need to retrieve the raw ISCO coding scheme data, and then convert this into a format that can be easily vectorised by the tools included in classifai.  
+To do this, we first set some variables that (1) specify the location of the raw ISCO scheme data, (2) the location where we want to save this, and (3) what we want to name the processed data file. *Note that the ISCO-08 scheme can be downloaded from the [ILO website](); a copy is also included with the occupationcoder-international repository - we here source from the latter*. 
+```{python, echo: true}
+ISCO_DATA_SOURCE = "https://raw.githubusercontent.com/datasciencecampus/occupationcoder-international/main/data/ISCO-08%20EN%20Structure%20and%20definitions.xlsx"
+ISCO_DATA_FILE = "../data/ISCO-08-scheme.xlsx" # Please adjust this path as required if running this code on your machine
+PROCESSED_ISCO_DATA = "../data/ISCO-08-processed.csv" # Please adjust this path as required if running this code on your machine
+```
+
+We can now download and save the ISCO file using a [simple helper function](https://github.com/jeroenminderman/occ-coding-tests/blob/a0bc505a45ade952bba7a2928013a21fd6bf4909/src/utils.py#L88) included with this repository:
+```{python, echo: true}
+import os
+from src.utils import get_isco_scheme_data
+if not os.path.exists(ISCO_DATA_FILE):
+    get_isco_scheme_data(source_url=ISCO_DATA_SOURCE, local_file_path=ISCO_DATA_FILE)
+```
+
+As described in more detail [here](), the ISCO-08 scheme consists of separate columns containing the ISCO code, the corresponding title, and various description fields. We here chose to simply concatenate the latter, resulting in a raw input file with two columns: ISCO code, and all description for that code. For the sake of simplicity, we provide a [helper function](https://github.com/jeroenminderman/occ-coding-tests/blob/a0bc505a45ade952bba7a2928013a21fd6bf4909/src/utils.py#L50) that does this; used as follows:
+```{python, echo: true}
+from src.utils import process_excel_to_csv
+process_excel_to_csv(ISCO_DATA_FILE, PROCESSED_ISCO_DATA)
+```
+
+```{python, echo: true}
+from classifai.vectorisers import HuggingFaceVectoriser
+from classifai.indexers import VectorStore
+vectoriser = HuggingFaceVectoriser(model_name="sentence-transformers/all-MiniLM-L6-v2")
+my_vector_store = VectorStore(
+    file_name="../data/ISCO-08-processed.csv",
+    data_type="csv",
+    vectoriser=vectoriser,
+    #meta_data={"colour": str, "language": str},
+    overwrite=True
+)
+```
