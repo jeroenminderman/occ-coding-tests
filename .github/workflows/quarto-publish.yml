@@ -1,0 +1,33 @@
+name: Render and Deploy Quarto Site
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+      - name: Setup Pandoc
+        uses: r-lib/actions/setup-pandoc@v2
+      - name: Cache Quarto
+        uses: actions/cache@v3
+        with:
+          path: ~/.quarto
+          key: quarto-${{ runner.os }}-${{ hashFiles('docs/_quarto.yml') }}
+          restore-keys: |
+            quarto-${{ runner.os }}-
+      - name: Render site
+        run: quarto render docs
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_site
+          # Optional: keep history
+          keep_files: false

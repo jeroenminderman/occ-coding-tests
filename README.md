@@ -17,7 +17,9 @@ pip install -r requirements.txt
 ```
 
 ## Use
-The core of this repo is the documentation included in the docs/ folder, generated using Quarto. To build the documentation locally, you will need to have Quarto installed. Installation of the command line tools for this (`quarto-cli`) should be taken care of by the `requirements.txt` file above, but in case you want to install Quarto separately or need to troubleshoot, you can find installation instructions on the [Quarto website](https://quarto.org/docs/get-started/). 
+The core of this repo is the documentation included in the [docs/](docs/) folder, generated using Quarto. Please see there for details on the occupation coding tools demonstrated here, the benchmark data included, and the results of the tests run.  
+
+To build the documentation locally, you will need to have Quarto installed. Installation of the command line tools for this (`quarto-cli`) should be taken care of by the `requirements.txt` file above, but in case you want to install Quarto separately or need to troubleshoot, you can find installation instructions on the [Quarto website](https://quarto.org/docs/get-started/). 
 
 Once you have Quarto installed, you can build the documentation by running the following command in the root directory of the repo:
 ```bash
