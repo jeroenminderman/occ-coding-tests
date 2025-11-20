@@ -22,6 +22,14 @@ jobs:
           key: quarto-${{ runner.os }}-${{ hashFiles('docs/_quarto.yml') }}
           restore-keys: |
             quarto-${{ runner.os }}-
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'  # Match your local version or Quarto default
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
       - name: Render site
         run: quarto render docs
       - name: Deploy to GitHub Pages
