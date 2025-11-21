@@ -70,8 +70,14 @@ if not os.path.exists("data/hf_vectoriser"):
 else:
     hf_vector_store = VectorStore.from_filespace(folder_path="data/hf_vectoriser",vectoriser=hf_vectoriser)
 
+#hf_vector_store.search("Kapana seller")
 
-hf_vector_store.search("Kapana seller")
+jobs = benchmark_dat["TITLE"] + " " + benchmark_dat["TASKS"] + " " + benchmark_dat["INDUSTRY"]
+classifai_coded = hf_vector_store.search(jobs.tolist(), n_results=3)
+coded_benchmark["classifai_p0"] = classifai_coded[classifai_coded["rank"]==0]["doc_id"].values
+coded_benchmark["classifai_p1"] = classifai_coded[classifai_coded["rank"]==1]["doc_id"].values
+coded_benchmark["classifai_p2"] = classifai_coded[classifai_coded["rank"]==2]["doc_id"].values
 
-
-
+utils.count_matches(coded_benchmark, match_col="MANUAL_ISCO1", 
+              prediction_cols= ["classifai_p0", "classifai_p1", "classifai_p2"], 
+              output="proportion")

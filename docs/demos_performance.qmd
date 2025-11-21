@@ -157,7 +157,6 @@ my_vector_store = VectorStore(
     file_name="../data/ISCO-08-processed.csv",
     data_type="csv",
     vectoriser=vectoriser,
-    #meta_data={"colour": str, "language": str},
     overwrite=True
 )
 ```
