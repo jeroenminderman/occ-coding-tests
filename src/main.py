@@ -16,7 +16,7 @@ columns_to_check = ["ID","TITLE","TASKS","INDUSTRY","MANUAL_ISCO1","MANUAL_ISCO2
 
 benchmark_dat = pd.read_csv(BENCHMARK_DATA_FILE, dtype={'MANUAL_ISCO1': str, 'MANUAL_ISCO2': str, 'MANUAL_ISCO3': str})
 if not os.path.exists(ISCO_DATA_FILE):
-    get_isco_scheme_data(source_url=ISCO_DATA_SOURCE, local_file_path=ISCO_DATA_FILE)
+    utils.get_isco_scheme_data(source_url=ISCO_DATA_SOURCE, local_file_path=ISCO_DATA_FILE)
 
 isco_scheme_dat = pd.read_excel(ISCO_DATA_FILE, dtype={'ISCO 08 Code': str, 'Tasks include': str}, keep_default_na=False)
 
@@ -51,11 +51,27 @@ coded_benchmark = coder.code_data_frame(benchmark_dat,
                                         sector_column = "INDUSTRY")
 
 # Count number of matches in coded data (currently assuming one [manual code] to many [predictions])
-count_matches(coded_benchmark, match_col="MANUAL_ISCO1", 
+utils.count_matches(coded_benchmark, match_col="MANUAL_ISCO1", 
               prediction_cols= ["prediction 1", "prediction 2", "prediction 3"], 
               output="proportion")
 
+# Classifai working tests
+from classifai.vectorisers import HuggingFaceVectoriser
+from classifai.indexers import VectorStore
+hf_vectoriser = HuggingFaceVectoriser(model_name="sentence-transformers/all-mpnet-base-v2")
+if not os.path.exists("data/hf_vectoriser"):
+    hf_vector_store = VectorStore(
+        file_name="data/ISCO-08-processed.csv",
+        data_type="csv",
+        vectoriser=hf_vectoriser,
+        output_dir="data/hf_vectoriser",
+        overwrite=True
+    )
+else:
+    hf_vector_store = VectorStore.from_filespace(folder_path="data/hf_vectoriser",vectoriser=hf_vectoriser)
 
+
+hf_vector_store.search("Kapana seller")
 
 
 
