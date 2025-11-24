@@ -152,11 +152,29 @@ process_excel_to_csv(ISCO_DATA_FILE, PROCESSED_ISCO_DATA)
 ```{python, echo: true}
 from classifai.vectorisers import HuggingFaceVectoriser
 from classifai.indexers import VectorStore
-vectoriser = HuggingFaceVectoriser(model_name="sentence-transformers/all-MiniLM-L6-v2")
-my_vector_store = VectorStore(
-    file_name="../data/ISCO-08-processed.csv",
-    data_type="csv",
-    vectoriser=vectoriser,
-    overwrite=True
-)
+hf_vectoriser = HuggingFaceVectoriser(model_name="sentence-transformers/all-mpnet-base-v2")
+```
+
+```{python, echo: true}
+if not os.path.exists("../data/hf_vectoriser"):
+    hf_vector_store = VectorStore(
+        file_name="../data/ISCO-08-processed.csv",
+        data_type="csv",
+        vectoriser=hf_vectoriser,
+        output_dir="../data/hf_vectoriser",
+        overwrite=True
+    )
+else:
+    hf_vector_store = VectorStore.from_filespace(folder_path="../data/hf_vectoriser",vectoriser=hf_vectoriser)
+```
+
+```{python, echo: true}
+jobs = benchmark_dat["TITLE"] + " " + benchmark_dat["TASKS"] + " " + benchmark_dat["INDUSTRY"]
+classifai_coded = hf_vector_store.search(jobs.tolist(), n_results=3)
+```
+
+```{python, echo:true}
+coded_benchmark["classifai_p0"] = classifai_coded[classifai_coded["rank"]==0]["doc_id"].values
+coded_benchmark["classifai_p1"] = classifai_coded[classifai_coded["rank"]==1]["doc_id"].values
+coded_benchmark["classifai_p2"] = classifai_coded[classifai_coded["rank"]==2]["doc_id"].valuesgit
 ```
