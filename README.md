@@ -4,7 +4,7 @@
 
 ## About
 
-**As of November 2023, this repository is under active development: things will change rapidly so please be aware of updates**
+**As of November 2025, this repository is under active development: things will change rapidly so please be aware of updates**
 
 This repo aims to (1) demonstrate the use of tools for coding occupation descriptions to the ISCO-08 scheme, and (2) serve as a demonstration of the "accuracy" of these approaches relative to a common baseline test data set which has been manually coded.
 

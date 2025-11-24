@@ -15,15 +15,17 @@ execute:
 
 ## Background and context
 
-This repository includes a data file containing example text descriptions of occupations (including tasks, industry etc), coded to the [ISCO-08 International Standard Classification of Occupations scheme](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/).  
-
-**These data are synthetic. However, the examples are based on and inspired by the kind of text inputs we have seen in real-world examples**. 
+This repository includes a synthetic data file containing example text descriptions of occupations (including tasks, industry etc), coded to the [ISCO-08 International Standard Classification of Occupations scheme](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/).  
 
 ### Data included here
 
 In the example data, based on a combination of the job title, job description and industry description, at least one ISCO code was assigned as accurately as possible, and where relevant, a comment has been included.  
 
-**Although every effort is made to generate "fair" example data that reflects the kind of real-world cases we have seen, as of the time of writing the example data have been provided and coded by a single coder. Thus, these example data have limitations (see below) and both [contributions to and review of this data set are welcome and encouraged](#contributing-examples).**  
+To generate these synthetic data, job titles and descriptions were compiled from a variety of examples - including e.g. job adverts, descriptions of jobs/roles given as examples by third parties, and ones based on specific examples we have seen in typical census or survey data from a range of (English-speaking) countries including the UK, Namibia and Zimbabwe. Note that for data confidentiality and protection reasons, none of the examples included are directly taken from such data.  
+
+These example cases were then coded "by hand" through referencing the ISCO-08 coding scheme - particularly focusing on the explicitly listed "job included here" records, the title of the code classes, and in particular their extended description of tasks involved. This coding step involves a degree of interpretation and semantic/contextual understanding. For example, a case with description "senior dev at gaming company" using wider understanding of the scheme implies "Software Developer" as an appropriate code. While the example data structure allows for the specification of up to 3 potential codes, the current version of the data predominantly has a single manual code assigned.  
+
+**Although every effort was made to generate "fair" example data that reflects the kind of real-world cases we have seen, as of the time of writing the example data have been provided and coded by a single coder. Thus, these example data have limitations (see below) and both [contributions to and review of this data set are welcome and encouraged](#contributing-examples).**  
 
 In addition, the example data is grouped according to "Type". This is intended to allow examples to be classified according to a variety of potential issues when assigning codes. These classes are intended to flag example cases that are ambiguous in some way, or have significant issues (like spelling mistakes in input). In effect, such examples are explicitly included to reflect real-world challenges when coding input data - providing a route to test performance of various coding tools given different types of challenges.
 
