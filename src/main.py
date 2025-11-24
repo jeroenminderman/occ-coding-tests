@@ -55,6 +55,23 @@ utils.count_matches(coded_benchmark, match_col="MANUAL_ISCO1",
               prediction_cols= ["prediction 1", "prediction 2", "prediction 3"], 
               output="proportion")
 
+def matches(dat, preds, output = "both"):
+    match1 = (dat["MANUAL_ISCO1"] == dat[preds[0]]).sum()
+
+    match123 = dat["MANUAL_ISCO1"].isin(
+                   dat[preds].values.flatten()
+               ).sum()
+
+    match1p = (match1/len(dat))*100
+    match123p = (match123/len(dat))*100
+    if output == "both":
+        return([f"{match1} ({match1p:.1f}%)", f"{match123} ({match123p:.1f}%)"])
+    if output == "abs":
+        return([f"{match1}", f"{match123}"])
+    if output == "prop":
+        return([f"{match1p:.1f}%", f"{match123p:.1f}%"])
+
+
 # Classifai working tests
 from classifai.vectorisers import HuggingFaceVectoriser
 from classifai.indexers import VectorStore

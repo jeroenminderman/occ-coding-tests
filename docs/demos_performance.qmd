@@ -73,17 +73,21 @@ print(match123)
 
 To avoid needing to re-run the same calculation every time, we can wrap the above in a short function that also calculates the % of the total:
 ```{python, echo: true}
-def matches(dat):
-    match1 = (dat["MANUAL_ISCO1"] == dat["prediction 1"]).sum()
+def matches(dat, preds, output = "both"):
+    match1 = (dat["MANUAL_ISCO1"] == dat[preds[0]]).sum()
 
     match123 = dat["MANUAL_ISCO1"].isin(
-                   dat[["prediction 1", "prediction 2", "prediction 3"]].values.flatten()
+                   dat[preds].values.flatten()
                ).sum()
 
     match1p = (match1/len(dat))*100
     match123p = (match123/len(dat))*100
-
-    return([f"{match1} ({match1p:.1f}%)", f"{match123} ({match123p:.1f}%)"])
+    if output == "both":
+        return([f"{match1} ({match1p:.1f}%)", f"{match123} ({match123p:.1f}%)"])
+    if output == "abs":
+        return([f"{match1}", f"{match123}"])
+    if output == "prop":
+        return([f"{match1p:.1f}%", f"{match123p:.1f}%"])
 ```
 
 We can now use this function to calculate performance on different subsets of the data.
@@ -98,19 +102,20 @@ t3 = example_coded[example_coded["TYPE"].str.contains('ambigui', case=False, na=
 
 Now we can use our function above on the full example data set, as well as the subsets, and collate a summary table (note that the code below does not follow best practice; this is deliberate to ensure maximum accessibility):
 ```{python, echo: true}
+preds1 = ["prediction 1", "prediction 2", "prediction 3"]
 summary1 = [
-    ["All examples", len(example_coded),matches(example_coded)[0],matches(example_coded)[1]],
-    ["Expected exact match", len(t1), matches(t1)[0],matches(t1)[1]],
-    ["Expected codeable", len(t2), matches(t2)[0],matches(t2)[1]],
-    ["Expected ambiguity", len(t3), matches(t3)[0],matches(t3)[1]]
+    ["All examples", len(example_coded),matches(example_coded, preds1)[0],matches(example_coded, preds1)[1]],
+    ["Expected exact match", len(t1), matches(t1, preds1)[0],matches(t1, preds1)[1]],
+    ["Expected codeable", len(t2), matches(t2, preds1)[0],matches(t2, preds1)[1]],
+    ["Expected ambiguity", len(t3), matches(t3, preds1)[0],matches(t3, preds1)[1]]
 ]
 pd.DataFrame(summary1, columns = ["Type","Total", "Match to 1","Match in 1-3",])
 ```
 
 The above results show that:  
 
-- When considering *all* of the example data **in `{python} matches(example_coded)[0]` of cases, the top prediction from occupationcoder-international agrees with a manually assigned code**. When interpreting a "match" as the manual code being included in the top 3 predictions, this increases to `{python} matches(example_coded)[1]` cases. It is worth stressing this includes all example cases we *a priori* expected to be challenging.  
-- As expected, direct match rates are much lower for known ambiguous cases (`{python} matches(t3)[0]`); but this is much improved by also considering the top 3 predictions (`{python} matches(t3)[1]`).
+- When considering *all* of the example data **in `{python} matches(example_coded, preds1, "prop")[0]` of cases, the top prediction from occupationcoder-international agrees with a manually assigned code**. When interpreting a "match" as the manual code being included in the top 3 predictions, this increases to `{python} matches(example_coded, preds1, "prop")[1]` cases. It is worth stressing this includes all example cases we *a priori* expected to be challenging.  
+- As expected, direct match rates are much lower for known ambiguous cases (`{python} matches(t3, preds1, "prop")[0]`); but this is much improved by also considering the top 3 predictions (`{python} matches(t3, preds1, "prop")[1]`).
 - Less informative (as this is a feature of occupationcoder-international, but nevertheless a good sense check), in all cases where we expected an exact match, this is matched correctly.
 
 # classifai
@@ -129,7 +134,7 @@ Note the following key points:
 ## Processing scheme and input data
 
 We first need to retrieve the raw ISCO coding scheme data, and then convert this into a format that can be easily vectorised by the tools included in classifai.  
-To do this, we first set some variables that (1) specify the location of the raw ISCO scheme data, (2) the location where we want to save this, and (3) what we want to name the processed data file. *Note that the ISCO-08 scheme can be downloaded from the [ILO website](); a copy is also included with the occupationcoder-international repository - we here source from the latter*. 
+To do this, we first set some variables that (1) specify the location of the raw ISCO scheme data, (2) the location where we want to save this, and (3) what we want to name the processed data file. *Note that the ISCO-08 scheme can be downloaded from the [ILO website](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/); a copy is also included with the occupationcoder-international repository - we here source from the latter*. 
 ```{python, echo: true}
 ISCO_DATA_SOURCE = "https://raw.githubusercontent.com/datasciencecampus/occupationcoder-international/main/data/ISCO-08%20EN%20Structure%20and%20definitions.xlsx"
 ISCO_DATA_FILE = "../data/ISCO-08-scheme.xlsx" # Please adjust this path as required if running this code on your machine
@@ -203,30 +208,28 @@ t2a = example_coded[example_coded["TYPE"].isna()]
 t3a = example_coded[example_coded["TYPE"].str.contains('ambigui', case=False, na=False)]
 ```
 
-We then use an adapted version of the same macthing function as above - but this time using the Classifai predictions.
+We then use the same macthing function defined above - but this time using the Classifai predictions.
 
 ```{python, echo:true}
-def matches_classifai(dat):
-    match1 = (dat["MANUAL_ISCO1"] == dat["classifai_p0"]).sum()
-
-    match123 = dat["MANUAL_ISCO1"].isin(
-                   dat[["classifai_p0", "classifai_p1", "classifai_p2"]].values.flatten()
-               ).sum()
-
-    match1p = (match1/len(dat))*100
-    match123p = (match123/len(dat))*100
-
-    return([f"{match1} ({match1p:.1f}%)", f"{match123} ({match123p:.1f}%)"])
-```
-
-And, again as before, summarising the proportion matches in the example data:
-
-```{python, echo:true}
+preds2 = ["classifai_p0", "classifai_p1", "classifai_p2"]
 summary2 = [
-    ["All examples", len(example_coded),matches_classifai(example_coded)[0],matches_classifai(example_coded)[1]],
-    ["Expected exact match", len(t1a), matches_classifai(t1a)[0],matches_classifai(t1a)[1]],
-    ["Expected codeable", len(t2a), matches_classifai(t2a)[0],matches_classifai(t2a)[1]],
-    ["Expected ambiguity", len(t3a), matches_classifai(t3a)[0],matches_classifai(t3a)[1]]
+    ["All examples", len(example_coded),matches(example_coded, preds2)[0], matches(example_coded, preds2)[1]],
+    ["Expected exact match", len(t1a), matches(t1a, preds2)[0],matches(t1a, preds2)[1]],
+    ["Expected codeable", len(t2a), matches(t2a, preds2)[0],matches(t2a,preds2)[1]],
+    ["Expected ambiguity", len(t3a), matches(t3a, preds2)[0],matches(t3a, preds2)[1]]
 ]
 pd.DataFrame(summary2, columns = ["Type","Total", "Match to 1","Match in 1-3",])
 ```
+- Across *all* of the example data **in `{python} matches(example_coded, preds2, "prop")[0]` of cases, the top prediction from Classifai agrees with a manually assigned code**. When interpreting a "match" as the manual code being included in the top 3 predictions, this increases to `{python} matches(example_coded, preds2, "prop")[1]` cases. It is worth stressing this includes all example cases we *a priori* expected to be challenging.  
+- Match rates to the top predictions are lower for known ambiguous cases (`{python} matches(t3a, preds2, "prop")[0]`); but this is much improved by also considering the top 3 predictions (`{python} matches(t3a, preds2, "prop")[1]`).
+
+# Summary & comparison
+
+Based on a [synthetic benchmark data set](example_data.qmd) (N = `{python} len(example_coded)`), and ***defining "accuracy" as a direct match between a preferred manually assigned code, and the best predicted match***;
+  
+- **Accuracy for occupationcoder-international is `{python} matches(example_coded, preds1, "prop")[0]`** across the full example data set (i.e. including known ambigous cases).  
+- **Accuracy for Classifai is `{python} matches(example_coded, preds2, "prop")[0]`** across the same full example data set.  
+- **Both tools perform better when all top 3 predictions are considered, with occupationcoder-international at `{python} matches(example_coded, preds1, "prop")[1]` and Classifai at `{python} matches(example_coded, preds2, "prop")[1]`**.
+- Comparing occupationcoder-international and Classifai:  
+    - **Classifai's accuracy performs better for *a priori* ambiguous cases (`{python} matches(t3a, preds2, "prop")[0]`), compared to occupationcoder-international (`{python} matches(t3, preds1, "prop")[0]`)**.
+    - Whereas (as expected, given its design) occupationcoder-international correctly matches all expected exact matches; Classifai misses a relatively small number of these.  
