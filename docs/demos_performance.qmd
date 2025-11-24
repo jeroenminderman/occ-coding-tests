@@ -124,8 +124,9 @@ Note the following key points:
 1. For the purposes of this demonstration, we are using a pretrained model from Huggingface as the vectoriser for schema and input text. **As this involves downloading a model from the Huggingface website, this assumes you have an appropriate API key set up and referenced in the machine you are using. If this is not done, the following code will fail to run.**  
 2. Classifai provides ways to use range of different models (and different model providers) as vectorisers - please see its documentation on how to use these.
 3. Different models will vary in terms of performance. For the purposes of the initial demonstration here, we only use one; the main idea being the comparison of its performance on benchmark data with the peformance of other tools such as occupationcoder-international. Further work comparing different vectoriser models used by Classifai would be valuable.
-4. The vectorisation of the coding scheme demonstrated below can take a while to run, depending on the hardware used. We suggest that you do this once, store the vector database locally, and when you need to re-use it, you load the stored version rather than re-building in each time. **This is a key way to make the coding as efficient as possible, and each "query" should only take milliseconds to complete, even on modest hardware.  
+4. The vectorisation of the coding scheme demonstrated below can take a while to run, depending on the hardware used. We suggest that you do this once, store the vector database locally, and when you need to re-use it, you load the stored version rather than re-building in each time. **This is a key way to make the coding as efficient as possible, and each "query" should only take milliseconds to complete, even on modest hardware.**  
 
+## Processing scheme and input data
 
 We first need to retrieve the raw ISCO coding scheme data, and then convert this into a format that can be easily vectorised by the tools included in classifai.  
 To do this, we first set some variables that (1) specify the location of the raw ISCO scheme data, (2) the location where we want to save this, and (3) what we want to name the processed data file. *Note that the ISCO-08 scheme can be downloaded from the [ILO website](); a copy is also included with the occupationcoder-international repository - we here source from the latter*. 
@@ -137,7 +138,8 @@ PROCESSED_ISCO_DATA = "../data/ISCO-08-processed.csv" # Please adjust this path 
 
 We can now download and save the ISCO file using a [simple helper function](https://github.com/jeroenminderman/occ-coding-tests/blob/a0bc505a45ade952bba7a2928013a21fd6bf4909/src/utils.py#L88) included with this repository:
 ```{python, echo: true}
-import os
+import os, sys
+sys.path.append(os.path.abspath(".."))
 from src.utils import get_isco_scheme_data
 if not os.path.exists(ISCO_DATA_FILE):
     get_isco_scheme_data(source_url=ISCO_DATA_SOURCE, local_file_path=ISCO_DATA_FILE)
@@ -149,11 +151,17 @@ from src.utils import process_excel_to_csv
 process_excel_to_csv(ISCO_DATA_FILE, PROCESSED_ISCO_DATA)
 ```
 
+## Creating the vector store
+
+Now that we have the scheme data processed in a format that can be used easily by Classifai, we download our chosen model for this example () from Huggingface. Note the point above re ensuring you have a suitable API key set up in your system.
+
 ```{python, echo: true}
 from classifai.vectorisers import HuggingFaceVectoriser
 from classifai.indexers import VectorStore
 hf_vectoriser = HuggingFaceVectoriser(model_name="sentence-transformers/all-mpnet-base-v2")
 ```
+
+We can now use this model and the Classifai functions to create a local vector database from the scheme data. As above, we only need to do this once on a given machine - so the code below first checks whether we already have a previously created store, and loads this if available. Otherwise, it creates a new one.
 
 ```{python, echo: true}
 if not os.path.exists("../data/hf_vectoriser"):
@@ -168,13 +176,57 @@ else:
     hf_vector_store = VectorStore.from_filespace(folder_path="../data/hf_vectoriser",vectoriser=hf_vectoriser)
 ```
 
+## Coding the example data
+
+Now that we have the local vector database from the scheme, we can use Classifai to code the example data. For the purposes of this example, we simply extract all available input text (ie job title, tasks description and industry description) from the example data, and combine this into a single string.
+
 ```{python, echo: true}
-jobs = benchmark_dat["TITLE"] + " " + benchmark_dat["TASKS"] + " " + benchmark_dat["INDUSTRY"]
+jobs = example_coded["TITLE"] + " " + example_coded["TASKS"] + " " + example_coded["INDUSTRY"]
 classifai_coded = hf_vector_store.search(jobs.tolist(), n_results=3)
 ```
 
+Classifai outputs results in a longitudinal format where "rank" 0-2 indicates the first, second and third best match respectively. For convenience, we here extract each of these in turn for a given example, and add these as coluns to our `example coded` data set.
+
 ```{python, echo:true}
-coded_benchmark["classifai_p0"] = classifai_coded[classifai_coded["rank"]==0]["doc_id"].values
-coded_benchmark["classifai_p1"] = classifai_coded[classifai_coded["rank"]==1]["doc_id"].values
-coded_benchmark["classifai_p2"] = classifai_coded[classifai_coded["rank"]==2]["doc_id"].valuesgit
+example_coded["classifai_p0"] = classifai_coded[classifai_coded["rank"]==0]["doc_id"].values
+example_coded["classifai_p1"] = classifai_coded[classifai_coded["rank"]==1]["doc_id"].values
+example_coded["classifai_p2"] = classifai_coded[classifai_coded["rank"]==2]["doc_id"].values
+```
+
+## Accuracy & performance
+
+We can now compare the manually assigned code to the ones top 3 matches provided by Classifai, following the same approach as for [occupationcoder-international]() as above. We first extract subsets of the data for expected exact matches, expected codeable, and expected ambiguous examples: 
+
+```{python, echo:true}
+t1a = example_coded[example_coded["TYPE"] == "Exact match"]
+t2a = example_coded[example_coded["TYPE"].isna()]
+t3a = example_coded[example_coded["TYPE"].str.contains('ambigui', case=False, na=False)]
+```
+
+We then use an adapted version of the same macthing function as above - but this time using the Classifai predictions.
+
+```{python, echo:true}
+def matches_classifai(dat):
+    match1 = (dat["MANUAL_ISCO1"] == dat["classifai_p0"]).sum()
+
+    match123 = dat["MANUAL_ISCO1"].isin(
+                   dat[["classifai_p0", "classifai_p1", "classifai_p2"]].values.flatten()
+               ).sum()
+
+    match1p = (match1/len(dat))*100
+    match123p = (match123/len(dat))*100
+
+    return([f"{match1} ({match1p:.1f}%)", f"{match123} ({match123p:.1f}%)"])
+```
+
+And, again as before, summarising the proportion matches in the example data:
+
+```{python, echo:true}
+summary2 = [
+    ["All examples", len(example_coded),matches_classifai(example_coded)[0],matches_classifai(example_coded)[1]],
+    ["Expected exact match", len(t1a), matches_classifai(t1a)[0],matches_classifai(t1a)[1]],
+    ["Expected codeable", len(t2a), matches_classifai(t2a)[0],matches_classifai(t2a)[1]],
+    ["Expected ambiguity", len(t3a), matches_classifai(t3a)[0],matches_classifai(t3a)[1]]
+]
+pd.DataFrame(summary2, columns = ["Type","Total", "Match to 1","Match in 1-3",])
 ```
