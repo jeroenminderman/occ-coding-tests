@@ -15,13 +15,15 @@ execute:
 
 ## Background and context
 
-This repository includes a data file containing example text descriptions of occupations (including tasks, industry etc), coded to the ISCO-08 International Standard Classification of Occupations scheme.  
+This repository includes a data file containing example text descriptions of occupations (including tasks, industry etc), coded to the [ISCO-08 International Standard Classification of Occupations scheme](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/).  
 
 **These data are synthetic. However, the examples are based on and inspired by the kind of text inputs we have seen in real-world examples**. 
 
 ### Data included here
 
 In the example data, based on a combination of the job title, job description and industry description, at least one ISCO code was assigned as accurately as possible, and where relevant, a comment has been included.  
+
+**Although every effort is made to generate "fair" example data that reflects the kind of real-world cases we have seen, as of the time of writing the example data have been provided and coded by a single coder. Thus, these example data have limitations (see below) and both [contributions to and review of this data set are welcome and encouraged](#contributing-examples).**  
 
 In addition, the example data is grouped according to "Type". This is intended to allow examples to be classified according to a variety of potential issues when assigning codes. These classes are intended to flag example cases that are ambiguous in some way, or have significant issues (like spelling mistakes in input). In effect, such examples are explicitly included to reflect real-world challenges when coding input data - providing a route to test performance of various coding tools given different types of challenges.
 
@@ -39,7 +41,9 @@ Thus, the example data included in this repository has two different intended pu
 
 2. Provision of a route to analyse performance of such coding tools given different potential challenges (e.g. input ambiguity, see below).  
 
-> While these data are synthetic, the intent is to make them reflect real-world scenarios as closely as possible. Thus, the examples deliberately include not only cases that are expected to be easy/straightforward to code, but also ones that are deliberately intended to be challenging - while being explicit about the reasons for this.  
+#### Limitations
+
+While these data are synthetic, the intent is to make them reflect real-world scenarios as closely as possible. Thus, the examples deliberately include not only cases that are expected to be easy/straightforward to code, but also ones that are deliberately intended to be challenging - while being explicit about the reasons for this.  
 **We stress that, despite the advantages over real-world data listed above, this synthetic data approach does have limitations, and we encourage review of and feedback on the example data, particularly in terms of how it reflect real-world samples.**
 
 ## Contributing examples
@@ -54,10 +58,10 @@ Any additions will be reviewed before inclusion in the `main` branch of the repo
 
 ## Data format & structure
 
-The example data file is in CSV format to maximise accessibility, interchangeability, while minimising potential cross-platform formatting issues.  
-The file has strict formatting requirements: these are enforced using validation code, and any changes or additions to the data require validation to be passed before further code is run. For details see sections below, but in general:
+The [example data file is in CSV format]("../data/isco_benchmark_data.csv") to maximise accessibility, interchangeability, while minimising potential cross-platform formatting issues.  
+**The file has strict formatting requirements**: these are enforced using validation steps, and any changes or additions to the data require validation to be passed before further code is run. For details see sections below, but in general:
 
-- A fixed number of expected columns (see below): if more or less columns are found, validation fails.  
+- A fixed number of expected columns (see below): if extra ones are found or some are missing, validation fails.  
 - Exact column naming as below  
 - Some columns can't have missing values  
 - Given ISCO codes have to be valid (ie included in the coding scheme)  
