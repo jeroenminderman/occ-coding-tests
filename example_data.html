@@ -132,11 +132,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#background-and-context" id="toc-background-and-context" class="nav-link active" data-scroll-target="#background-and-context">Background and context</a>
   <ul>
   <li><a href="#data-included-here" id="toc-data-included-here" class="nav-link" data-scroll-target="#data-included-here">Data included here</a></li>
-  <li><a href="#why-synthetic-benchmark-data" id="toc-why-synthetic-benchmark-data" class="nav-link" data-scroll-target="#why-synthetic-benchmark-data">Why synthetic benchmark data?</a>
-  <ul class="collapse">
-  <li><a href="#aims" id="toc-aims" class="nav-link" data-scroll-target="#aims">Aims</a></li>
-  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
-  </ul></li>
+  <li><a href="#why-synthetic-data" id="toc-why-synthetic-data" class="nav-link" data-scroll-target="#why-synthetic-data">Why synthetic data?</a></li>
+  <li><a href="#purpose" id="toc-purpose" class="nav-link" data-scroll-target="#purpose">Purpose</a></li>
   </ul></li>
   <li><a href="#contributing-examples" id="toc-contributing-examples" class="nav-link" data-scroll-target="#contributing-examples">Contributing examples</a></li>
   <li><a href="#data-format-structure" id="toc-data-format-structure" class="nav-link" data-scroll-target="#data-format-structure">Data format &amp; structure</a>
@@ -175,43 +172,30 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="background-and-context" class="level2">
 <h2 class="anchored" data-anchor-id="background-and-context">Background and context</h2>
-<p>This repository includes a synthetic data file containing example text descriptions of occupations (including tasks, industry etc), coded to the <a href="https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/">ISCO-08 International Standard Classification of Occupations scheme</a>.</p>
+<p>This repository includes a synthetic data file containing example text descriptions of occupations (including tasks, industry etc), coded to the <a href="https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/">ISCO-08 International Standard Classification of Occupations</a> scheme.</p>
 <section id="data-included-here" class="level3">
 <h3 class="anchored" data-anchor-id="data-included-here">Data included here</h3>
-<p>In the example data, based on a combination of the job title, job description and industry description, at least one ISCO code was assigned as accurately as possible, and where relevant, a comment has been included.</p>
-<p>To generate these synthetic data, job titles and descriptions were compiled from a variety of examples - including e.g.&nbsp;job adverts, descriptions of jobs/roles given as examples by third parties, and ones based on specific examples we have seen in typical census or survey data from a range of (English-speaking) countries including the UK, Namibia and Zimbabwe. Note that for data confidentiality and protection reasons, none of the examples included are directly taken from such data.</p>
-<p>These example cases were then coded “by hand” through referencing the ISCO-08 coding scheme - particularly focusing on the explicitly listed “job included here” records, the title of the code classes, and in particular their extended description of tasks involved. This coding step involves a degree of interpretation and semantic/contextual understanding. For example, a case with description “senior dev at gaming company” using wider understanding of the scheme implies “Software Developer” as an appropriate code. While the example data structure allows for the specification of up to 3 potential codes, the current version of the data predominantly has a single manual code assigned.</p>
-<p><strong>Although every effort was made to generate “fair” example data that reflects the kind of real-world cases we have seen, as of the time of writing the example data have been provided and coded by a single coder. Thus, these example data have limitations (see below) and both <a href="#contributing-examples">contributions to and review of this data set are welcome and encouraged</a>.</strong></p>
-<p>In addition, the example data is grouped according to “Type”. This is intended to allow examples to be classified according to a variety of potential issues when assigning codes. These classes are intended to flag example cases that are ambiguous in some way, or have significant issues (like spelling mistakes in input). In effect, such examples are explicitly included to reflect real-world challenges when coding input data - providing a route to test performance of various coding tools given different types of challenges.</p>
+<p>The example data combine job titles, descriptions, and industry information to assign one or more ISCO codes as accurately as possible, with comments added where relevant.</p>
+<p>These synthetic cases were built from varied sources—job adverts, example job descriptions, including ones inspired by real-world census or survey data we have seen in a range of English-speaking countries (including the UK and numerous African countries). Note that for reasons of data confidentiality, no examples included are directly taken from such datasets.</p>
+<p>Each case was manually coded using the ISCO-08 scheme, focusing on listed example jobs, class titles, and task descriptions. This requires interpretation and contextual understanding (e.g., “senior dev at gaming company” implies “Software Developer”). Although up to three codes can be stored, most cases currently have a single manual code. Currently, all examples were compiled and coded by one (non-specialist) coder, so the dataset has limitations; <a href="#contributing-examples">contributions and review are encouraged</a>.</p>
+<p>Each record is also assigned a “Type” to indicate potential coding issues—such as ambiguity or spelling errors—capturing real-world challenges and enabling tests of coding tools under different conditions.</p>
 </section>
-<section id="why-synthetic-benchmark-data" class="level3">
-<h3 class="anchored" data-anchor-id="why-synthetic-benchmark-data">Why synthetic benchmark data?</h3>
-<p><strong>To allow unbiased comparison of coding accuracy (e.g.&nbsp;of different coding tools), it is key to test outputs on common benchmark data.</strong></p>
-<p>While in an ideal world, accuracy tests would use “real world” census data that has been manually coded by clerical coders, we are not aware of such a data set that is both (1) publicly accessible and (2) has been validated thoroughly (i.e.&nbsp;cross-coded by different coders, and revised as needed). <em>Even if available</em>, using such real-world data does not allow for any control over, or analysis of, different potential issues with the input data: e.g.&nbsp;flagging of ambiguous cases as set out below.</p>
-<section id="aims" class="level4">
-<h4 class="anchored" data-anchor-id="aims">Aims</h4>
-<p>Thus, the example data included in this repository has two different intended purposes:</p>
-<ol type="1">
-<li><p>Provision of a common benchmark of text data pre-coded to ISCO codes, to allow comparisons of the efficacy of different (semi-automated) coding tools.</p></li>
-<li><p>Provision of a route to analyse performance of such coding tools given different potential challenges (e.g.&nbsp;input ambiguity, see below).</p></li>
-</ol>
+<section id="why-synthetic-data" class="level3">
+<h3 class="anchored" data-anchor-id="why-synthetic-data">Why synthetic data?</h3>
+<p>To compare coding accuracy between tools, a shared benchmark is essential.</p>
+<p>Ideally, this would be real-world data thoroughly coded and validated by clerical coders, but we are not aware of publicly accessible, rigorously cross-checked datasets that meet these requirements. Even if available, real-world data could not isolate or analyse specific input-data issues (e.g., known ambiguous cases).</p>
 </section>
-<section id="limitations" class="level4">
-<h4 class="anchored" data-anchor-id="limitations">Limitations</h4>
-<p>While these data are synthetic, the intent is to make them reflect real-world scenarios as closely as possible. Thus, the examples deliberately include not only cases that are expected to be easy/straightforward to code, but also ones that are deliberately intended to be challenging - while being explicit about the reasons for this.<br>
-<strong>We stress that, despite the advantages over real-world data listed above, this synthetic data approach does have limitations, and we encourage review of and feedback on the example data, particularly in terms of how it reflect real-world samples.</strong></p>
-</section>
+<section id="purpose" class="level3">
+<h3 class="anchored" data-anchor-id="purpose">Purpose</h3>
+<p>The dataset included here serves two purposes: (1) to provide a common benchmark of text inputs pre-coded to ISCO for comparing coding tools; and (2) to enable analysis of tool performance, including under specific challenges (e.g., ambiguous input).</p>
 </section>
 </section>
 <section id="contributing-examples" class="level2">
 <h2 class="anchored" data-anchor-id="contributing-examples">Contributing examples</h2>
-<p>We welcome suggested additions to these example data. Indeed, the bigger the benchmark data set, the better any validation could be. Any proposed additions or changes should be made by making changes to the example file and including these in a formal Pull Request to the repository code.</p>
-<p>As a minimum, when adding new examples, please include a unique sequential ID number, a job TITLE, and at least one expected ISCO code which should be assigned to it (MANUAL_ISCO1). For further detail, see “Example data format &amp; structure” below.</p>
-<blockquote class="blockquote">
-<p><strong>Because these data are used to test and compare coding approaches, it is vital such data (1) adhere to the core purpose/aims specified above; and (2) are formatted correctly.<br>
-When proposing additions please ensure you carefully consider the purpose and take note of the format requirements set out below.<br>
+<p>We welcome suggested additions to these example data. Any proposed additions or changes should be made by making changes to the example file and including these in a formal Pull Request to the repository code.</p>
+<p>As a minimum, when adding new examples, please include a unique sequential ID number, a job TITLE, and at least one expected ISCO code which should be assigned to it (MANUAL_ISCO1). For further detail, see <a href="#data-format--structure">“Data format &amp; structure”</a> below.</p>
+<p><strong>Because these data are used to test and compare coding approaches, it is vital such data (1) adhere to the core purpose/aims specified above; and (2) are formatted correctly. When proposing additions, please ensure you carefully consider the purpose and take note of the format requirements set out below.<br>
 Any additions will be reviewed before inclusion in the <code>main</code> branch of the repo and the authors reserve the right to reject additions and do not commit to specifying reasons for this.</strong></p>
-</blockquote>
 </section>
 <section id="data-format-structure" class="level2">
 <h2 class="anchored" data-anchor-id="data-format-structure">Data format &amp; structure</h2>
@@ -224,85 +208,87 @@ Any additions will be reviewed before inclusion in the <code>main</code> branch 
 </li>
 <li>Some columns can’t have missing values<br>
 </li>
-<li>Given ISCO codes have to be valid (ie included in the coding scheme)</li>
+<li>Given ISCO codes have to be valid (ie included in the coding scheme)<br>
+</li>
+<li>TYPE values are <a href="#example-types">one of a fixed number of categories</a>, or left blank if no significant coding issues are expected.</li>
 </ul>
-<div id="3061d933" class="cell" data-execution_count="1">
+<div id="913f6b2d" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display" data-execution_count="1">
 <style type="text/css">
-#T_e0c1f_row0_col0, #T_e0c1f_row0_col1, #T_e0c1f_row0_col2, #T_e0c1f_row0_col3, #T_e0c1f_row1_col0, #T_e0c1f_row1_col1, #T_e0c1f_row1_col2, #T_e0c1f_row1_col3, #T_e0c1f_row2_col0, #T_e0c1f_row2_col1, #T_e0c1f_row2_col2, #T_e0c1f_row2_col3, #T_e0c1f_row3_col0, #T_e0c1f_row3_col1, #T_e0c1f_row3_col2, #T_e0c1f_row3_col3, #T_e0c1f_row4_col0, #T_e0c1f_row4_col1, #T_e0c1f_row4_col2, #T_e0c1f_row4_col3, #T_e0c1f_row5_col0, #T_e0c1f_row5_col1, #T_e0c1f_row5_col2, #T_e0c1f_row5_col3, #T_e0c1f_row6_col0, #T_e0c1f_row6_col1, #T_e0c1f_row6_col2, #T_e0c1f_row6_col3, #T_e0c1f_row7_col0, #T_e0c1f_row7_col1, #T_e0c1f_row7_col2, #T_e0c1f_row7_col3, #T_e0c1f_row8_col0, #T_e0c1f_row8_col1, #T_e0c1f_row8_col2, #T_e0c1f_row8_col3 {
+#T_b6bb6_row0_col0, #T_b6bb6_row0_col1, #T_b6bb6_row0_col2, #T_b6bb6_row0_col3, #T_b6bb6_row1_col0, #T_b6bb6_row1_col1, #T_b6bb6_row1_col2, #T_b6bb6_row1_col3, #T_b6bb6_row2_col0, #T_b6bb6_row2_col1, #T_b6bb6_row2_col2, #T_b6bb6_row2_col3, #T_b6bb6_row3_col0, #T_b6bb6_row3_col1, #T_b6bb6_row3_col2, #T_b6bb6_row3_col3, #T_b6bb6_row4_col0, #T_b6bb6_row4_col1, #T_b6bb6_row4_col2, #T_b6bb6_row4_col3, #T_b6bb6_row5_col0, #T_b6bb6_row5_col1, #T_b6bb6_row5_col2, #T_b6bb6_row5_col3, #T_b6bb6_row6_col0, #T_b6bb6_row6_col1, #T_b6bb6_row6_col2, #T_b6bb6_row6_col3, #T_b6bb6_row7_col0, #T_b6bb6_row7_col1, #T_b6bb6_row7_col2, #T_b6bb6_row7_col3, #T_b6bb6_row8_col0, #T_b6bb6_row8_col1, #T_b6bb6_row8_col2, #T_b6bb6_row8_col3 {
   text-align: left;
 }
 </style>
 
-<div id="T_e0c1f" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
+<div id="T_b6bb6" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_e0c1f-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_b6bb6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Example data columns and data types
 </figcaption>
-<div aria-describedby="T_e0c1f-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="T_e0c1f" class="caption-top table table-sm table-striped small">
+<div aria-describedby="T_b6bb6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="T_b6bb6" class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th id="T_e0c1f_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Column</th>
-<th id="T_e0c1f_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Description</th>
-<th id="T_e0c1f_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Missing allowed?</th>
-<th id="T_e0c1f_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">Value</th>
+<th id="T_b6bb6_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Column</th>
+<th id="T_b6bb6_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Description</th>
+<th id="T_b6bb6_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Missing allowed?</th>
+<th id="T_b6bb6_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">Value</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_e0c1f_row0_col0" class="data row0 col0">ID</td>
-<td id="T_e0c1f_row0_col1" class="data row0 col1">Unique sequential ID number for example</td>
-<td id="T_e0c1f_row0_col2" class="data row0 col2">No</td>
-<td id="T_e0c1f_row0_col3" class="data row0 col3">Integer</td>
+<td id="T_b6bb6_row0_col0" class="data row0 col0">ID</td>
+<td id="T_b6bb6_row0_col1" class="data row0 col1">Unique sequential ID number for example</td>
+<td id="T_b6bb6_row0_col2" class="data row0 col2">No</td>
+<td id="T_b6bb6_row0_col3" class="data row0 col3">Integer</td>
 </tr>
 <tr class="even">
-<td id="T_e0c1f_row1_col0" class="data row1 col0">TITLE</td>
-<td id="T_e0c1f_row1_col1" class="data row1 col1">Text input: short job title</td>
-<td id="T_e0c1f_row1_col2" class="data row1 col2">No</td>
-<td id="T_e0c1f_row1_col3" class="data row1 col3">Free text</td>
+<td id="T_b6bb6_row1_col0" class="data row1 col0">TITLE</td>
+<td id="T_b6bb6_row1_col1" class="data row1 col1">Text input: short job title</td>
+<td id="T_b6bb6_row1_col2" class="data row1 col2">No</td>
+<td id="T_b6bb6_row1_col3" class="data row1 col3">Free text</td>
 </tr>
 <tr class="odd">
-<td id="T_e0c1f_row2_col0" class="data row2 col0">TASKS</td>
-<td id="T_e0c1f_row2_col1" class="data row2 col1">Text input: longer description of job and tasks involved</td>
-<td id="T_e0c1f_row2_col2" class="data row2 col2">Yes</td>
-<td id="T_e0c1f_row2_col3" class="data row2 col3">Free text</td>
+<td id="T_b6bb6_row2_col0" class="data row2 col0">TASKS</td>
+<td id="T_b6bb6_row2_col1" class="data row2 col1">Text input: longer description of job and tasks involved</td>
+<td id="T_b6bb6_row2_col2" class="data row2 col2">Yes</td>
+<td id="T_b6bb6_row2_col3" class="data row2 col3">Free text</td>
 </tr>
 <tr class="even">
-<td id="T_e0c1f_row3_col0" class="data row3 col0">INDUSTRY</td>
-<td id="T_e0c1f_row3_col1" class="data row3 col1">Text input: description of industry for the job</td>
-<td id="T_e0c1f_row3_col2" class="data row3 col2">Yes</td>
-<td id="T_e0c1f_row3_col3" class="data row3 col3">Free text</td>
+<td id="T_b6bb6_row3_col0" class="data row3 col0">INDUSTRY</td>
+<td id="T_b6bb6_row3_col1" class="data row3 col1">Text input: description of industry for the job</td>
+<td id="T_b6bb6_row3_col2" class="data row3 col2">Yes</td>
+<td id="T_b6bb6_row3_col3" class="data row3 col3">Free text</td>
 </tr>
 <tr class="odd">
-<td id="T_e0c1f_row4_col0" class="data row4 col0">MANUAL_ISCO1</td>
-<td id="T_e0c1f_row4_col1" class="data row4 col1">First candidate ISCO-08 code (most preferred)</td>
-<td id="T_e0c1f_row4_col2" class="data row4 col2">No</td>
-<td id="T_e0c1f_row4_col3" class="data row4 col3">Valid ISCO code (1-4 digits)</td>
+<td id="T_b6bb6_row4_col0" class="data row4 col0">MANUAL_ISCO1</td>
+<td id="T_b6bb6_row4_col1" class="data row4 col1">First candidate ISCO-08 code (most preferred)</td>
+<td id="T_b6bb6_row4_col2" class="data row4 col2">No</td>
+<td id="T_b6bb6_row4_col3" class="data row4 col3">Valid ISCO code (1-4 digits)</td>
 </tr>
 <tr class="even">
-<td id="T_e0c1f_row5_col0" class="data row5 col0">MANUAL_ISCO2</td>
-<td id="T_e0c1f_row5_col1" class="data row5 col1">Second candidate ISCO-08 code</td>
-<td id="T_e0c1f_row5_col2" class="data row5 col2">Yes</td>
-<td id="T_e0c1f_row5_col3" class="data row5 col3">Valid ISCO code (1-4 digits)</td>
+<td id="T_b6bb6_row5_col0" class="data row5 col0">MANUAL_ISCO2</td>
+<td id="T_b6bb6_row5_col1" class="data row5 col1">Second candidate ISCO-08 code</td>
+<td id="T_b6bb6_row5_col2" class="data row5 col2">Yes</td>
+<td id="T_b6bb6_row5_col3" class="data row5 col3">Valid ISCO code (1-4 digits)</td>
 </tr>
 <tr class="odd">
-<td id="T_e0c1f_row6_col0" class="data row6 col0">MANUAL_ISCO3</td>
-<td id="T_e0c1f_row6_col1" class="data row6 col1">Third candidate ISCO-08 code</td>
-<td id="T_e0c1f_row6_col2" class="data row6 col2">Yes</td>
-<td id="T_e0c1f_row6_col3" class="data row6 col3">Valid ISCO code (1-4 digits)</td>
+<td id="T_b6bb6_row6_col0" class="data row6 col0">MANUAL_ISCO3</td>
+<td id="T_b6bb6_row6_col1" class="data row6 col1">Third candidate ISCO-08 code</td>
+<td id="T_b6bb6_row6_col2" class="data row6 col2">Yes</td>
+<td id="T_b6bb6_row6_col3" class="data row6 col3">Valid ISCO code (1-4 digits)</td>
 </tr>
 <tr class="even">
-<td id="T_e0c1f_row7_col0" class="data row7 col0">TYPE</td>
-<td id="T_e0c1f_row7_col1" class="data row7 col1">Type of example (see detail below)</td>
-<td id="T_e0c1f_row7_col2" class="data row7 col2">Yes</td>
-<td id="T_e0c1f_row7_col3" class="data row7 col3">One of a fixed number of types (see below), or missing (empty)</td>
+<td id="T_b6bb6_row7_col0" class="data row7 col0">TYPE</td>
+<td id="T_b6bb6_row7_col1" class="data row7 col1">Type of example (see detail below)</td>
+<td id="T_b6bb6_row7_col2" class="data row7 col2">Yes</td>
+<td id="T_b6bb6_row7_col3" class="data row7 col3">One of a fixed number of types (see below), or missing (empty)</td>
 </tr>
 <tr class="odd">
-<td id="T_e0c1f_row8_col0" class="data row8 col0">COMMENT</td>
-<td id="T_e0c1f_row8_col1" class="data row8 col1">Comments</td>
-<td id="T_e0c1f_row8_col2" class="data row8 col2">Yes</td>
-<td id="T_e0c1f_row8_col3" class="data row8 col3">Free text</td>
+<td id="T_b6bb6_row8_col0" class="data row8 col0">COMMENT</td>
+<td id="T_b6bb6_row8_col1" class="data row8 col1">Comments</td>
+<td id="T_b6bb6_row8_col2" class="data row8 col2">Yes</td>
+<td id="T_b6bb6_row8_col3" class="data row8 col3">Free text</td>
 </tr>
 </tbody>
 </table>
@@ -316,55 +302,55 @@ Table&nbsp;1: Example data columns and data types
 <p>In the example data file, the TYPE value should be one of a fixed number of classes (see table below). It can also be left blank/empty - implying that no issues are expected with the “codeability” of the example.</p>
 <p>TYPE is included in the example file to allow analyses of potential mismatches between the manually assigned codes, and the potential predictions by coding tools. It is important to stress that such mismatches can occur due to a variety of reasons - they may reflect genuine mistakes on the part of the enumerators or clerical coders; they may reflect ambiguity in the text inputs and therefore imply a level of subjectivity in the choice of code; or it may be due to ambiguity in the coding scheme itself.</p>
 <p>While the example data set is intended to be coded as accurately as possible (ie. excluding straight errors in coding), the TYPE value in the data flags cases where we think mismatches between manual and predicted codes are still likely to happen (due to, for example, ambiguity in the input - see below). In addition, different TYPE classes provide some information on <em>why</em> we think that is the case.</p>
-<div id="e85bdf03" class="cell" data-execution_count="2">
+<div id="cd78572b" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_0c6c9_row0_col0, #T_0c6c9_row0_col1, #T_0c6c9_row1_col0, #T_0c6c9_row1_col1, #T_0c6c9_row2_col0, #T_0c6c9_row2_col1, #T_0c6c9_row3_col0, #T_0c6c9_row3_col1, #T_0c6c9_row4_col0, #T_0c6c9_row4_col1, #T_0c6c9_row5_col0, #T_0c6c9_row5_col1, #T_0c6c9_row6_col0, #T_0c6c9_row6_col1 {
+#T_bed31_row0_col0, #T_bed31_row0_col1, #T_bed31_row1_col0, #T_bed31_row1_col1, #T_bed31_row2_col0, #T_bed31_row2_col1, #T_bed31_row3_col0, #T_bed31_row3_col1, #T_bed31_row4_col0, #T_bed31_row4_col1, #T_bed31_row5_col0, #T_bed31_row5_col1, #T_bed31_row6_col0, #T_bed31_row6_col1 {
   text-align: left;
 }
 </style>
 
-<div id="T_0c6c9" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
+<div id="T_bed31" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_0c6c9-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_bed31-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;2: Example data columns and data types
 </figcaption>
-<div aria-describedby="T_0c6c9-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="T_0c6c9" class="caption-top table table-sm table-striped small">
+<div aria-describedby="T_bed31-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="T_bed31" class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
-<th id="T_0c6c9_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Type</th>
-<th id="T_0c6c9_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Description</th>
+<th id="T_bed31_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Type</th>
+<th id="T_bed31_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_0c6c9_row0_col0" class="data row0 col0">Exact match</td>
-<td id="T_0c6c9_row0_col1" class="data row0 col1">Expecting an 'exact match': job title is explicitly included in the ISCO-08 scheme</td>
+<td id="T_bed31_row0_col0" class="data row0 col0">Exact match</td>
+<td id="T_bed31_row0_col1" class="data row0 col1">Expecting an 'exact match': job title is explicitly included in the ISCO-08 scheme</td>
 </tr>
 <tr class="even">
-<td id="T_0c6c9_row1_col0" class="data row1 col0">Exact match fail</td>
-<td id="T_0c6c9_row1_col1" class="data row1 col1">Expecting an exact match as above, but not coded as such (ie. strictly speaking, a coding error)</td>
+<td id="T_bed31_row1_col0" class="data row1 col0">Exact match fail</td>
+<td id="T_bed31_row1_col1" class="data row1 col1">Expecting an exact match as above, but not coded as such (ie. strictly speaking, a coding error)</td>
 </tr>
 <tr class="odd">
-<td id="T_0c6c9_row2_col0" class="data row2 col0">Semantic ambiguity</td>
-<td id="T_0c6c9_row2_col1" class="data row2 col1">Text inputs combined are semantically ambiguous (e.g. lack of detail means different codes could apply)</td>
+<td id="T_bed31_row2_col0" class="data row2 col0">Semantic ambiguity</td>
+<td id="T_bed31_row2_col1" class="data row2 col1">Text inputs combined are semantically ambiguous (e.g. lack of detail means different codes could apply)</td>
 </tr>
 <tr class="even">
-<td id="T_0c6c9_row3_col0" class="data row3 col0">Scheme ambiguity</td>
-<td id="T_0c6c9_row3_col1" class="data row3 col1">Ambiguity caused (predominantly) by structure/detail in the scheme, rather than the text inputs per se</td>
+<td id="T_bed31_row3_col0" class="data row3 col0">Scheme ambiguity</td>
+<td id="T_bed31_row3_col1" class="data row3 col1">Ambiguity caused (predominantly) by structure/detail in the scheme, rather than the text inputs per se</td>
 </tr>
 <tr class="odd">
-<td id="T_0c6c9_row4_col0" class="data row4 col0">Deeper ambiguity</td>
-<td id="T_0c6c9_row4_col1" class="data row4 col1">A combination of different types of ambiguity of inputs and scheme</td>
+<td id="T_bed31_row4_col0" class="data row4 col0">Deeper ambiguity</td>
+<td id="T_bed31_row4_col1" class="data row4 col1">A combination of different types of ambiguity of inputs and scheme</td>
 </tr>
 <tr class="even">
-<td id="T_0c6c9_row5_col0" class="data row5 col0">Input issue</td>
-<td id="T_0c6c9_row5_col1" class="data row5 col1">Issues like misspellings in text inputs</td>
+<td id="T_bed31_row5_col0" class="data row5 col0">Input issue</td>
+<td id="T_bed31_row5_col1" class="data row5 col1">Issues like misspellings in text inputs</td>
 </tr>
 <tr class="odd">
-<td id="T_0c6c9_row6_col0" class="data row6 col0"></td>
-<td id="T_0c6c9_row6_col1" class="data row6 col1">Blank values for type means no coding issues are expected</td>
+<td id="T_bed31_row6_col0" class="data row6 col0"></td>
+<td id="T_bed31_row6_col1" class="data row6 col1">Blank values for type means no coding issues are expected</td>
 </tr>
 </tbody>
 </table>
