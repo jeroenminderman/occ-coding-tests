@@ -9,7 +9,7 @@ format:
 jupyter: python3
 execute:
   enabled: true
-  echo: true
+  echo: false
   default-language: python
 ---
 
@@ -23,19 +23,18 @@ All the following examples assume you have a working Python install on your syst
 
 ## Initial set up
 
-To install occupationcoder-international, you can install the package directly from its Github repository using `pip`, as set out [here](https://github.com/datasciencecampus/occupationcoder-international#:~:text=Input%20format%22%20onwards.-,Getting%20started,-There%20are%20three). Alternatively, installing the [`requirements.txt`](../requirements.txt) for the present repository will also install everything required.
-
-We suggest you create and work from a Python virtual environment (venv) to manage package installs cleanly, but this is not strictly required.  
+To install occupationcoder-international, you can install the package directly from its Github repository using `pip`, as set out [here](https://github.com/datasciencecampus/occupationcoder-international#:~:text=Input%20format%22%20onwards.-,Getting%20started,-There%20are%20three). Alternatively, installing the [`requirements.txt`](../requirements.txt) for the present repository will also install everything required.  
 
 The package comes with a "dictionary" for the ISCO-08 coding scheme, so there is no need to set this up manually.  
 
-## Coding the example data
+## Coding the examples
 
 While occupationcoder-international comes with a script that allows it to be run on an input file directly from the command line, we here demonstrate its use in Python code, as a module. We assume this is the most likely approach for embedding this tool into existing (Python) pipelines.  
 
 To load the required modules, set up the coder class, and load the example data, you can do the following:  
 
 ```{python, echo: true}
+#| echo: true
 import pandas as pd
 from oc3i import Coder
 
@@ -44,44 +43,54 @@ coder = Coder(scheme = "isco")
 
 # Load the example data (please adjust the file path as needed on your machine)
 example_data = pd.read_csv("../data/isco_benchmark_data.csv", dtype={'MANUAL_ISCO1': str, 'MANUAL_ISCO2': str, 'MANUAL_ISCO3': str})
-example_data.head()
+#example_data.head()
 ```
 
 ```{python, echo: true}
+#| echo: true
 # Code the example using all text in the TITLE, TASKS and INDUSTRY columns.
 example_coded = coder.code_data_frame(example_data, 
                                         title_column = "TITLE", 
                                         description_column = "TASKS", 
                                         sector_column = "INDUSTRY")
-example_coded.head()
+#example_coded.head()
 ```
 
 We can now assess performance of occupationcoder-international, by calculating "accuracy" as the number of cases where the top predicted code matches the manually assigned code exactly:
 ```{python, echo: true}
+#| echo: true
 # Accuracy 1: number of cases where top prediction matches the preferred manually assigned code:
 match1 = (example_coded["MANUAL_ISCO1"] == example_coded["prediction 1"]).sum()
-print(match1)
+#print(match1)
 ```
 Alternatively, we can be less conservative and also consider cases where *either* the top 1, 2 or 3 prediction matches the manually assigned code (i.e. assuming a user uses the tool to suggest potential alternative options):
 ```{python, echo: true}
+#| echo: true
 # Accuracy 2: number of cases where manually assigned code is included in the top 3 predictions:
 match123 = example_coded["MANUAL_ISCO1"].isin(
                 example_coded[["prediction 1", "prediction 2", "prediction 3"]].values.flatten()
            ).sum()
-print(match123)
+#print(match123)
 ```
 
-To avoid needing to re-run the same calculation every time, we can wrap the above in a short function that also calculates the % of the total:
+To avoid needing to re-run the same calculation every time, we can wrap the above in a short function that also calculates the % of the total (note, the following code is deliberately verbose for demonstration purposes - we suggest this is optimised and expanded on in production settings):
 ```{python, echo: true}
+#| echo: true
 def matches(dat, preds, output = "both"):
+
+    # Calculate number of matches to "best" prediction:
     match1 = (dat["MANUAL_ISCO1"] == dat[preds[0]]).sum()
 
+    # Calculate number of matches to any of the top 3 predictions:
     match123 = dat["MANUAL_ISCO1"].isin(
                    dat[preds].values.flatten()
                ).sum()
 
+    # Calculate proportions:
     match1p = (match1/len(dat))*100
     match123p = (match123/len(dat))*100
+
+    # Ouput match count, proportion or both - formatted as strings:
     if output == "both":
         return([f"{match1} ({match1p:.1f}%)", f"{match123} ({match123p:.1f}%)"])
     if output == "abs":
@@ -90,18 +99,19 @@ def matches(dat, preds, output = "both"):
         return([f"{match1p:.1f}%", f"{match123p:.1f}%"])
 ```
 
-We can now use this function to calculate performance on different subsets of the data.
+We can now use this function to calculate performance on different subsets of the data.  
+
 For example, we first split the full example data set by TYPE (for a more detailed explanation of these data TYPES, see [here](example_data.qmd)). Specifically, we split by (1) cases where we expect an exact match; (2) cases that should be codeable but not an exact match; (3) cases we expect to be challenging due to ambiguity:
 ```{python, echo: true}
+#| echo: true
 t1 = example_coded[example_coded["TYPE"] == "Exact match"]
 t2 = example_coded[example_coded["TYPE"].isna()]
 t3 = example_coded[example_coded["TYPE"].str.contains('ambigui', case=False, na=False)]
 ```
 
-## Accuracy & performance
-
 Now we can use our function above on the full example data set, as well as the subsets, and collate a summary table (note that the code below does not follow best practice; this is deliberate to ensure maximum accessibility):
 ```{python, echo: true}
+#| echo: true
 preds1 = ["prediction 1", "prediction 2", "prediction 3"]
 summary1 = [
     ["All examples", len(example_coded),matches(example_coded, preds1)[0],matches(example_coded, preds1)[1]],
@@ -109,8 +119,20 @@ summary1 = [
     ["Expected codeable", len(t2), matches(t2, preds1)[0],matches(t2, preds1)[1]],
     ["Expected ambiguity", len(t3), matches(t3, preds1)[0],matches(t3, preds1)[1]]
 ]
-pd.DataFrame(summary1, columns = ["Type","Total", "Match to 1","Match in 1-3",])
+summary1 = pd.DataFrame(summary1, columns = ["Type","Total", "Match to 1","Match in 1-3",])
 ```
+The output of the above is shown in the following section.
+
+## Occpationcoder accuracy
+
+Match counts and rates between manually assigned codes, and those produced by occupationcoder-international are given in the table below.
+
+```{python}
+summary1.style.set_caption("occupationcoder-international 'accuracy', estimated as match rates between manually assigned occupation codes and either the highest ranked match ('Match to 1'), or as a match to any of the best 3 matches ('Match in 1-3'), grouped by either all examples or examples split by type.") \
+        .hide(axis="index") \
+        .set_properties(**{"text-align": "left"})
+```
+
 
 The above results show that:  
 
@@ -124,18 +146,14 @@ The above results show that:
 
 Classifai can be installed either by following the [instructions provided with its repository](https://github.com/datasciencecampus/classifai/) (recommended method); or as of the time of writing this, by installing the [requirements](../requirements.txt) for the present repository (noting that this may change as classifai is under active development).  
 
-Note the following key points:  
+Note that for the purposes of this example and tests, we here use a Huggingface model as the vectoriser - Classifai can use other models and performance may vary. We also stress that vectorising the entire coding scheme takes some time, so it is worth doing this once, and re-using a saved copy when running queries. This minimises processing overhead.  
 
-1. For the purposes of this demonstration, we are using a pretrained model from Huggingface as the vectoriser for schema and input text. **As this involves downloading a model from the Huggingface website, this assumes you have an appropriate API key set up and referenced in the machine you are using. If this is not done, the following code will fail to run.**  
-2. Classifai provides ways to use range of different models (and different model providers) as vectorisers - please see its documentation on how to use these.
-3. Different models will vary in terms of performance. For the purposes of the initial demonstration here, we only use one; the main idea being the comparison of its performance on benchmark data with the peformance of other tools such as occupationcoder-international. Further work comparing different vectoriser models used by Classifai would be valuable.
-4. The vectorisation of the coding scheme demonstrated below can take a while to run, depending on the hardware used. We suggest that you do this once, store the vector database locally, and when you need to re-use it, you load the stored version rather than re-building in each time. **This is a key way to make the coding as efficient as possible, and each "query" should only take milliseconds to complete, even on modest hardware.**  
+## Processing the data
 
-## Processing scheme and input data
-
-We first need to retrieve the raw ISCO coding scheme data, and then convert this into a format that can be easily vectorised by the tools included in classifai.  
-To do this, we first set some variables that (1) specify the location of the raw ISCO scheme data, (2) the location where we want to save this, and (3) what we want to name the processed data file. *Note that the ISCO-08 scheme can be downloaded from the [ILO website](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/); a copy is also included with the occupationcoder-international repository - we here source from the latter*. 
+We first need to retrieve the raw ISCO coding scheme data, and convert into a format that can be vectorised by Classifai.  
+The following sets download targets for the scheme (note this uses a copy included with occuptioncoder-international; it can also be sourced from the ILO website) and local save locations.
 ```{python, echo: true}
+#| echo: true
 ISCO_DATA_SOURCE = "https://raw.githubusercontent.com/datasciencecampus/occupationcoder-international/main/data/ISCO-08%20EN%20Structure%20and%20definitions.xlsx"
 ISCO_DATA_FILE = "../data/ISCO-08-scheme.xlsx" # Please adjust this path as required if running this code on your machine
 PROCESSED_ISCO_DATA = "../data/ISCO-08-processed.csv" # Please adjust this path as required if running this code on your machine
@@ -143,6 +161,7 @@ PROCESSED_ISCO_DATA = "../data/ISCO-08-processed.csv" # Please adjust this path 
 
 We can now download and save the ISCO file using a [simple helper function](https://github.com/jeroenminderman/occ-coding-tests/blob/a0bc505a45ade952bba7a2928013a21fd6bf4909/src/utils.py#L88) included with this repository:
 ```{python, echo: true}
+#| echo: true
 import os, sys
 sys.path.append(os.path.abspath(".."))
 from src.utils import get_isco_scheme_data
@@ -150,17 +169,19 @@ if not os.path.exists(ISCO_DATA_FILE):
     get_isco_scheme_data(source_url=ISCO_DATA_SOURCE, local_file_path=ISCO_DATA_FILE)
 ```
 
-As described in more detail [here](), the ISCO-08 scheme consists of separate columns containing the ISCO code, the corresponding title, and various description fields. We here chose to simply concatenate the latter, resulting in a raw input file with two columns: ISCO code, and all description for that code. For the sake of simplicity, we provide a [helper function](https://github.com/jeroenminderman/occ-coding-tests/blob/a0bc505a45ade952bba7a2928013a21fd6bf4909/src/utils.py#L50) that does this; used as follows:
+The ISCO-08 scheme consists of separate columns containing the ISCO code, the corresponding title, and various description fields. We here chose to simply concatenate the latter, resulting in a raw input file with two columns: ISCO code, and all description for that code. For the sake of simplicity, we provide a [helper function](https://github.com/jeroenminderman/occ-coding-tests/blob/a0bc505a45ade952bba7a2928013a21fd6bf4909/src/utils.py#L50) that does this; used as follows:
 ```{python, echo: true}
+#| echo: true
 from src.utils import process_excel_to_csv
 process_excel_to_csv(ISCO_DATA_FILE, PROCESSED_ISCO_DATA)
 ```
 
-## Creating the vector store
+## Create vector store
 
-Now that we have the scheme data processed in a format that can be used easily by Classifai, we download our chosen model for this example () from Huggingface. Note the point above re ensuring you have a suitable API key set up in your system.
+Now that we have the scheme data processed in a format that can be used easily by Classifai, we download our chosen model for this example ([all-mpnet-base-v2](https://huggingface.co/sentence-transformers/all-mpnet-base-v2)). Note that for this to work you will need a working API key installed on your system.
 
 ```{python, echo: true}
+#| echo: true
 from classifai.vectorisers import HuggingFaceVectoriser
 from classifai.indexers import VectorStore
 hf_vectoriser = HuggingFaceVectoriser(model_name="sentence-transformers/all-mpnet-base-v2")
@@ -169,6 +190,7 @@ hf_vectoriser = HuggingFaceVectoriser(model_name="sentence-transformers/all-mpne
 We can now use this model and the Classifai functions to create a local vector database from the scheme data. As above, we only need to do this once on a given machine - so the code below first checks whether we already have a previously created store, and loads this if available. Otherwise, it creates a new one.
 
 ```{python, echo: true}
+#| echo: true
 if not os.path.exists("../data/hf_vectoriser"):
     hf_vector_store = VectorStore(
         file_name="../data/ISCO-08-processed.csv",
@@ -181,11 +203,12 @@ else:
     hf_vector_store = VectorStore.from_filespace(folder_path="../data/hf_vectoriser",vectoriser=hf_vectoriser)
 ```
 
-## Coding the example data
+## Coding the examples
 
 Now that we have the local vector database from the scheme, we can use Classifai to code the example data. For the purposes of this example, we simply extract all available input text (ie job title, tasks description and industry description) from the example data, and combine this into a single string.
 
 ```{python, echo: true}
+#| echo: true
 jobs = example_coded["TITLE"] + " " + example_coded["TASKS"] + " " + example_coded["INDUSTRY"]
 classifai_coded = hf_vector_store.search(jobs.tolist(), n_results=3)
 ```
@@ -193,16 +216,16 @@ classifai_coded = hf_vector_store.search(jobs.tolist(), n_results=3)
 Classifai outputs results in a longitudinal format where "rank" 0-2 indicates the first, second and third best match respectively. For convenience, we here extract each of these in turn for a given example, and add these as coluns to our `example coded` data set.
 
 ```{python, echo:true}
+#| echo: true
 example_coded["classifai_p0"] = classifai_coded[classifai_coded["rank"]==0]["doc_id"].values
 example_coded["classifai_p1"] = classifai_coded[classifai_coded["rank"]==1]["doc_id"].values
 example_coded["classifai_p2"] = classifai_coded[classifai_coded["rank"]==2]["doc_id"].values
 ```
 
-## Accuracy & performance
-
 We can now compare the manually assigned code to the ones top 3 matches provided by Classifai, following the same approach as for [occupationcoder-international]() as above. We first extract subsets of the data for expected exact matches, expected codeable, and expected ambiguous examples: 
 
 ```{python, echo:true}
+#| echo: true
 t1a = example_coded[example_coded["TYPE"] == "Exact match"]
 t2a = example_coded[example_coded["TYPE"].isna()]
 t3a = example_coded[example_coded["TYPE"].str.contains('ambigui', case=False, na=False)]
@@ -211,6 +234,7 @@ t3a = example_coded[example_coded["TYPE"].str.contains('ambigui', case=False, na
 We then use the same macthing function defined above - but this time using the Classifai predictions.
 
 ```{python, echo:true}
+#| echo: true
 preds2 = ["classifai_p0", "classifai_p1", "classifai_p2"]
 summary2 = [
     ["All examples", len(example_coded),matches(example_coded, preds2)[0], matches(example_coded, preds2)[1]],
@@ -218,8 +242,19 @@ summary2 = [
     ["Expected codeable", len(t2a), matches(t2a, preds2)[0],matches(t2a,preds2)[1]],
     ["Expected ambiguity", len(t3a), matches(t3a, preds2)[0],matches(t3a, preds2)[1]]
 ]
-pd.DataFrame(summary2, columns = ["Type","Total", "Match to 1","Match in 1-3",])
+summary2 = pd.DataFrame(summary2, columns = ["Type","Total", "Match to 1","Match in 1-3",])
 ```
+
+## Classifai accuracy
+
+Match counts and rates between manually assigned codes, and those produced by Classifai are given in the table below.
+
+```{python}
+summary2.style.set_caption("Classifai 'accuracy', estimated as match rates between manually assigned occupation codes and either the highest ranked match ('Match to 1'), or as a match to any of the best 3 matches ('Match in 1-3'), grouped by either all examples or examples split by type.") \
+        .hide(axis="index") \
+        .set_properties(**{"text-align": "left"})
+```
+
 - Across *all* of the example data **in `{python} matches(example_coded, preds2, "prop")[0]` of cases, the top prediction from Classifai agrees with a manually assigned code**. When interpreting a "match" as the manual code being included in the top 3 predictions, this increases to `{python} matches(example_coded, preds2, "prop")[1]` cases. It is worth stressing this includes all example cases we *a priori* expected to be challenging.  
 - Match rates to the top predictions are lower for known ambiguous cases (`{python} matches(t3a, preds2, "prop")[0]`); but this is much improved by also considering the top 3 predictions (`{python} matches(t3a, preds2, "prop")[1]`).
 

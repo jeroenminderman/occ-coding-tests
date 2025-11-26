@@ -15,47 +15,35 @@ execute:
 
 ## Background and context
 
-This repository includes a synthetic data file containing example text descriptions of occupations (including tasks, industry etc), coded to the [ISCO-08 International Standard Classification of Occupations scheme](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/).  
+This repository includes a synthetic data file containing example text descriptions of occupations (including tasks, industry etc), coded to the [ISCO-08 International Standard Classification of Occupations](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/) scheme.  
 
 ### Data included here
 
-In the example data, based on a combination of the job title, job description and industry description, at least one ISCO code was assigned as accurately as possible, and where relevant, a comment has been included.  
+The example data combine job titles, descriptions, and industry information to assign one or more ISCO codes as accurately as possible, with comments added where relevant.  
 
-To generate these synthetic data, job titles and descriptions were compiled from a variety of examples - including e.g. job adverts, descriptions of jobs/roles given as examples by third parties, and ones based on specific examples we have seen in typical census or survey data from a range of (English-speaking) countries including the UK, Namibia and Zimbabwe. Note that for data confidentiality and protection reasons, none of the examples included are directly taken from such data.  
+These synthetic cases were built from varied sources—job adverts, example job descriptions, including ones inspired by real-world census or survey data we have seen in a range of English-speaking countries (including the UK and numerous African countries). Note that for reasons of data confidentiality, no examples included are directly taken from such datasets.  
 
-These example cases were then coded "by hand" through referencing the ISCO-08 coding scheme - particularly focusing on the explicitly listed "job included here" records, the title of the code classes, and in particular their extended description of tasks involved. This coding step involves a degree of interpretation and semantic/contextual understanding. For example, a case with description "senior dev at gaming company" using wider understanding of the scheme implies "Software Developer" as an appropriate code. While the example data structure allows for the specification of up to 3 potential codes, the current version of the data predominantly has a single manual code assigned.  
+Each case was manually coded using the ISCO-08 scheme, focusing on listed example jobs, class titles, and task descriptions. This requires interpretation and contextual understanding (e.g., “senior dev at gaming company” implies “Software Developer”). Although up to three codes can be stored, most cases currently have a single manual code. Currently, all examples were compiled and coded by one (non-specialist) coder, so the dataset has limitations; [contributions and review are encouraged](#contributing-examples).  
 
-**Although every effort was made to generate "fair" example data that reflects the kind of real-world cases we have seen, as of the time of writing the example data have been provided and coded by a single coder. Thus, these example data have limitations (see below) and both [contributions to and review of this data set are welcome and encouraged](#contributing-examples).**  
+Each record is also assigned a “Type” to indicate potential coding issues—such as ambiguity or spelling errors—capturing real-world challenges and enabling tests of coding tools under different conditions.  
 
-In addition, the example data is grouped according to "Type". This is intended to allow examples to be classified according to a variety of potential issues when assigning codes. These classes are intended to flag example cases that are ambiguous in some way, or have significant issues (like spelling mistakes in input). In effect, such examples are explicitly included to reflect real-world challenges when coding input data - providing a route to test performance of various coding tools given different types of challenges.
+### Why synthetic data?
 
-### Why synthetic benchmark data?
+To compare coding accuracy between tools, a shared benchmark is essential.  
+  
+Ideally, this would be real-world data thoroughly coded and validated by clerical coders, but we are not aware of publicly accessible, rigorously cross-checked datasets that meet these requirements. Even if available, real-world data could not isolate or analyse specific input-data issues (e.g., known ambiguous cases).
 
-**To allow unbiased comparison of coding accuracy (e.g. of different coding tools), it is key to test outputs on common benchmark data.**  
+### Purpose
 
-While in an ideal world, accuracy tests would use "real world" census data that has been manually coded by clerical coders, we are not aware of such a data set that is both (1) publicly accessible and (2) has been validated thoroughly (i.e. cross-coded by different coders, and revised as needed). _Even if available_, using such real-world data does not allow for any control over, or analysis of, different potential issues with the input data: e.g. flagging of ambiguous cases as set out below.  
-
-#### Aims
-
-Thus, the example data included in this repository has two different intended purposes:  
-
-1. Provision of a common benchmark of text data pre-coded to ISCO codes, to allow comparisons of the efficacy of different (semi-automated) coding tools.  
-
-2. Provision of a route to analyse performance of such coding tools given different potential challenges (e.g. input ambiguity, see below).  
-
-#### Limitations
-
-While these data are synthetic, the intent is to make them reflect real-world scenarios as closely as possible. Thus, the examples deliberately include not only cases that are expected to be easy/straightforward to code, but also ones that are deliberately intended to be challenging - while being explicit about the reasons for this.  
-**We stress that, despite the advantages over real-world data listed above, this synthetic data approach does have limitations, and we encourage review of and feedback on the example data, particularly in terms of how it reflect real-world samples.**
+The dataset included here serves two purposes: (1) to provide a common benchmark of text inputs pre-coded to ISCO for comparing coding tools; and (2) to enable analysis of tool performance, including under specific challenges (e.g., ambiguous input).
 
 ## Contributing examples
 
-We welcome suggested additions to these example data. Indeed, the bigger the benchmark data set, the better any validation could be. Any proposed additions or changes should be made by making changes to the example file and including these in a formal Pull Request to the repository code.  
+We welcome suggested additions to these example data. Any proposed additions or changes should be made by making changes to the example file and including these in a formal Pull Request to the repository code.  
 
-As a minimum, when adding new examples, please include a unique sequential ID number, a job TITLE, and at least one expected ISCO code which should be assigned to it (MANUAL_ISCO1). For further detail, see "Example data format & structure" below.
+As a minimum, when adding new examples, please include a unique sequential ID number, a job TITLE, and at least one expected ISCO code which should be assigned to it (MANUAL_ISCO1). For further detail, see ["Data format & structure"](#data-format--structure) below.
 
-> **Because these data are used to test and compare coding approaches, it is vital such data (1) adhere to the core purpose/aims specified above; and (2) are formatted correctly.  
-When proposing additions please ensure you carefully consider the purpose and take note of the format requirements set out below.  
+**Because these data are used to test and compare coding approaches, it is vital such data (1) adhere to the core purpose/aims specified above; and (2) are formatted correctly. When proposing additions, please ensure you carefully consider the purpose and take note of the format requirements set out below.  
 Any additions will be reviewed before inclusion in the `main` branch of the repo and the authors reserve the right to reject additions and do not commit to specifying reasons for this.**
 
 ## Data format & structure
@@ -67,6 +55,7 @@ The [example data file is in CSV format]("../data/isco_benchmark_data.csv") to m
 - Exact column naming as below  
 - Some columns can't have missing values  
 - Given ISCO codes have to be valid (ie included in the coding scheme)  
+- TYPE values are [one of a fixed number of categories](#example-types), or left blank if no significant coding issues are expected.
 
 ```{python, echo: false}
 import pandas as pd

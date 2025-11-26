@@ -18,45 +18,37 @@ With this repository, we aim to provide a demonstration of:
 
 2. The (relative) performance of such coding tools, benchmarked against a common example data set.  
 
+We compare two tools that can support the occupation coding process - [occupationcoder-international](https://github.com/datasciencecampus/occupationcoder-international) and [Classifai](https://github.com/datasciencecampus/classifai). Other tools are available.
+
 # Background and context
 
 ## What is "occupation coding"
 
-Data on respondents' occupations are typically collected by National Statistics Organisations (NSOs) in a variety of surveys, including e.g. national Labour Force Surveys or Censuses. In such surveys, enumerators or field workers record the answers to questions like "*How would you describe the job you have done in the last X months*" and "*What tasks did this job involve*". The answer to these questions is typically recorded as short text strings (often not more than a few words).  
+National Statistics Organisations (NSOs) collect data on respondents’ occupations through surveys such as Labour Force Surveys and Censuses. Enumerators record brief text answers to questions like "*What job have you done in the last X months?*" and "*What tasks did it involve?*"
 
-On the basis of these text inputs, either the same enumerators, or clerical coders following receipt of the data, are expected to assign at least one suitable class from a coding scheme (e.g. [ISCO-08](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/)) which best fits the given description. Such coding schemes are set up to link job descriptions to a range of standardised classes, each with a numeric code. Such schemes allow for consistent statistical reporting, and provide a means of international comparability. [ISCO-08 is the international standard](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/) for this, but many countries use bespoke coding schemes that are partly or wholly based on ISCO (for example, the UK uses a national scheme called [SOC](https://www.ons.gov.uk/methodology/classificationsandstandards/standardoccupationalclassificationsoc), whereas the Namibian scheme is referred to as [NASCO](file:///home/jejoenje/Downloads/Code%20list%20NLFS%202014%20Correct%20(3).pdf)).  
+Using these short descriptions, enumerators or later clerical coders assign one or more classes from an occupational coding scheme (e.g., ISCO-08). These schemes link job descriptions to standardised numeric codes, enabling consistent reporting and international comparability. While [ISCO-08](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/) is the international standard, many countries use adapted national versions (e.g., the UK’s [SOC](https://www.ons.gov.uk/methodology/classificationsandstandards/standardoccupationalclassificationsoc) or Namibia’s [NASCO](file:///home/jejoenje/Downloads/Code%20list%20NLFS%202014%20Correct%20(3).pdf)).
 
-Without going into detail, such coding schemes consist of numerical classes (codes), with a short title (e.g. "Psychologists") and usually a description that details the sort of tasks typically performed, associated typical industries or sectors, and often a list of specific job titles associated with that class and/or ones that should be explicitly coded to something else. These coding schemes are usually hierarchical: i.e. "secondary school teachers" are part of a wider group of "teachers", which in turn might be grouped into "educational workers"; the level in the hierarchy is typically reflected in the number of digits of the associated code.
-
-Depending on the agreed process, if the text description is ambiguous relative to the coding scheme, more than one candidate code might be assigned, or coding might revert to a higher level in the hierarchy.
+Coding schemes are hierarchical, with each numeric code representing a class that includes a title (e.g., “Psychologists”), a task description, and common job titles. Higher-level groups encompass more specific ones, with hierarchy reflected in the number of digits in the code. If a description is ambiguous, coders may assign multiple possible codes or fall back to a higher-level category.
 
 ## Common challenges
 
-Traditionally, appropriate classification of job descriptions to codes/classes relies on correct application of the coding scheme by enumerators or clerical coders; both in terms of their knowledge of its content and coverage, as well as its limitations.  
+Accurate classification of job descriptions depends on coders correctly applying the coding scheme and understanding its scope and limitations. This requires substantial training and ongoing skill maintenance, which is often underresourced, leading to data quality issues.  
 
-This heavily relies on training and maintenance of skills, and while not a trivial task, this is often underresourced. This can lead to data quality challenges. For example, it is vital that field enumerators ask follow up questions if initial answers are too limited in detail to allow accurate coding to a class in the scheme. 
-Similarly, if coding is done by clerical coders when data has already been collected, it is important for them to have a solid understanding of the limitations of the data, the scheme, and the end use of the data set to allow appropriate coding given the data available. This often involves trade-offs, selection of multiple potentially suitable candidate codes, and ensuring consistent processes are followed.
+Enumerators must probe for sufficient detail to enable precise coding, while clerical coders need a clear grasp of the data’s constraints, the scheme, and the dataset’s intended use. Coding frequently involves trade-offs, selecting multiple plausible codes, and maintaining consistent procedures.  
 
-Conistency is key, but also the main challenge.  
-In many cases, even when appropriately trained, different coders may code inputs differently when they are  ambiguous or when the scheme is lacking in detail.  
-Thus, in an ideal world, extensive validation takes place. This can mean multiple clerical coders coding the same subsets of data in a "double blind" fashion, and revising cases where different coders have given different answers. However, this can be extremely resource intensive in many real-world scenarios where surveys (e.g. national censuses) consist of many millions of records.
+Consistency is both essential and difficult to achieve. Even well-trained coders may classify ambiguous descriptions differently or struggle when the scheme lacks detail. Ideally, validation—such as double-blind coding with reconciliation of discrepancies—would be widespread, but this can be impractical for large surveys with millions of records due to the resources required.  
 
-## Purpose of coding tools in general
+## Purpose of coding tools
 
-Occupation coding tools aim to reduce the workload involved in coding records: in particular in the context of validation checks.  
+Occupation coding tools aim to reduce the workload of coding, especially during validation. They should be seen as assistive tools, not fully autonomous coders: limited input data and coarse coding schemes mean that ambiguity faced by humans also affects any coding tool. Thus, keeping a human in the loop is crucial, particularly for business-critical outputs. 
 
-It is worth stressing that here, we argue that such tools should always be viewed as "coding-assist tools", as opposed to "automatic coders". From the discussion presented throughout these pages it should be clear that (given limited input data) much of the ambiguity faced by human coders remains just as ambiguous to pretty much any coding tool. Put another way, **typically the main challenge is limitations in the input data and granularity of the coding schemes, not the quality of the coding process itself (whether done by a human or otherwise)**. Some automation tools will struggle more than others, and keeping a "human in the loop" is vital to ensure data quality, particularly where the end product is business critical.  
+In the application demonstrated here, we focus on workflows where manually assigned codes already exist (ie *after* data collection), with the tools helping to review and potentially revise them. Although they could be integrated into data-collection software (e.g. [CSPro](https://www.census.gov/data/software/cspro.html)), the focus is on their role in data processing, not collection. When used as such, the tools have the potential to significantly increase efficiency by (1) filtering out cases that do not need any revision as the manual codes agree with tool predictions; and (2) for those cases that do need review, provide (ranked) alternative (better) choices.
 
-Our assumption with all of the process and analyses presented here is that these tools will be used when manually assigned codes are already available, and they are used to check and potentially revise assigned codes, based on alternatives presented. While it would be technically possible to embed these coding tools in commonly used data collection tools (e.g. [CSPro](https://www.census.gov/data/software/cspro.html)), we here focus on their role in data processing rather than collection.  
-
-From a data processing perspective, the obvious stage to apply these tools is during the data validation process - that is, identifying subsets of records that (1) do not need further intervention: i.e. the tool prediction concurs with the manual code; (2) mismatches between tool predictions and manual code that may need brief review; and (3) cases where there is no agreement at all between tool predictions and manual codes: these need manual intervention.  
-The objective is to maximise the number of cases in the first group, thereby increasing data validation efficiency.  
-
-# Coding tools considered here
+# Coding tools used
 
 Tools to support occupation coding have been available for decades. Established examples are [CASCOT](https://warwick.ac.uk/fac/soc/ier/data_group/cascot/) and [GCode](https://www150.statcan.gc.ca/n1/en/catalogue/10H0033). However, most such tools are closed-source and proprietory. As a result, it is not trivial to build these into existing pipelines, and it can be challenging to adapt them to bespoke schemes. In addition, the growing availability of context-driven language models provide potential for further development.
 
-While we by no means argue against using other established tools, we here compare application and performance of two open source solutions: [occupationcoder-international](https://github.com/datasciencecampus/occupationcoder-international) and [classifai](https://github.com/datasciencecampus/classifai).  
+While we by no means argue against using other established tools, we here compare application and performance of two open source solutions: [occupationcoder-international](https://github.com/datasciencecampus/occupationcoder-international) and [Classifai](https://github.com/datasciencecampus/classifai).  
 Both of these use distinctly different technical approaches, and because they are Python based tools, can be embedded directly in existing pipelines. In part, the pages presented here serve as a demonstration of their application as much as a comparison of their performance.
 
 ## occupationcoder-international
@@ -77,9 +69,9 @@ Obvious limitations aside, this approach is well established (TF-IDF is a widely
 
 ## classifai
 
-[classifai](https://github.com/datasciencecampus/classifai) is a general classifcation tool using (Large) Language Models to vectorise scheme and input text. The overall logic is very similar to occupationcoder-international, in that both the scheme and input text are turned into numerical vectors, compared and ranked by similarity.  
+[Classifai](https://github.com/datasciencecampus/classifai) is a general vector search tool using (Large) Language Models to vectorise scheme and input text. It can be used to identify the best match(es) between input text and specific sections of a corpus, such as a coding scheme. The overall logic is very similar to occupationcoder-international, in that both the scheme and input text are turned into numerical vectors, compared and ranked by similarity.  
 
-The key difference is that classifai uses pre-trained (Large) Language Models to do this vectorisation. Such models produce context-aware embeddings, which means that when used as vectorisers, they can provide some level of "understanding" of context.  
+The key difference is that Classifai uses pre-trained (Large) Language Models to do this vectorisation. Such models produce context-aware embeddings, which means that when used as vectorisers, they can provide some level of "understanding" of context.  
 For example, a good pre-trained Language Model shown the phrase "tuktuk" would likely associate this with "motorised rickshaw driver" or similar. By contrast, unless "tuktuk" is explicitly given in the coding scheme, a TF-IDF based approach would fail, because there simply is no word-based link between this input phrase and any class in the scheme.  
 
 While the ability to consider context may represent a significant advantage, it should be noted that the use of pre-trained models as vectorisers can be restricted in certain circumstances, and their use can be more computationally intensive compared to TF-IDF (but, depending on implementation, this can be effectively managed).
