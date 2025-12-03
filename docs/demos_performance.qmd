@@ -178,7 +178,7 @@ process_excel_to_csv(ISCO_DATA_FILE, PROCESSED_ISCO_DATA)
 
 ## Create vector store
 
-Now that we have the scheme data processed in a format that can be used easily by Classifai, we download our chosen model for this example ([all-mpnet-base-v2](https://huggingface.co/sentence-transformers/all-mpnet-base-v2)). Note that for this to work you will need a working API key installed on your system.
+Now that we have the scheme data processed in a format that can be used easily by Classifai, we download our chosen model for this example ([all-mpnet-base-v2](https://huggingface.co/sentence-transformers/all-mpnet-base-v2)).
 
 ```{python, echo: true}
 #| echo: true
