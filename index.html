@@ -173,7 +173,7 @@ ul.task-list li input[type="checkbox"] {
 <li><p>How different coding tools can be used to code descriptions of occupations to a standardised coding scheme like ISCO-08.</p></li>
 <li><p>The (relative) performance of such coding tools, benchmarked against a common example data set.</p></li>
 </ol>
-<p>We compare two tools that can support the occupation coding process - <a href="https://github.com/datasciencecampus/occupationcoder-international">occupationcoder-international</a> and <a href="https://github.com/datasciencecampus/classifai">Classifai</a>. Other tools are available.</p>
+<p>We compare two tools that can <strong>support</strong> the occupation coding process - <a href="https://github.com/datasciencecampus/occupationcoder-international">occupationcoder-international</a> and <a href="https://github.com/datasciencecampus/classifai">Classifai</a>. Other tools are available. <strong>It is also worth stressing that in the way they are used here, the tools themselves should be seen as just a small part of a wider coding “pipeline”. For example, in production settings, it will be important to embed the workflow set out here into a wider process that might include initial data processing, but also post-processing steps that might involve (for example) confirming final classification</strong>.</p>
 <section id="background-and-context" class="level1">
 <h1>Background and context</h1>
 <section id="what-is-occupation-coding" class="level2">
@@ -208,7 +208,7 @@ Both of these use distinctly different technical approaches, and because they ar
 <p>Obvious limitations aside, this approach is well established (TF-IDF is a widely used technique in Natural Language Processing), is quick to implement, and in most scenarios is very fast.</p>
 <section id="application-and-performance" class="level3">
 <h3 class="anchored" data-anchor-id="application-and-performance">Application and performance</h3>
-<p><strong>For a demonstration of the use of occupationcoder-international, and performance tests, see HERE.</strong></p>
+<p><strong>For a demonstration of the use of occupationcoder-international, and performance tests, see <a href="https://jeroenminderman.github.io/occ-coding-tests/demos_performance.html#occupationcoder-international">HERE</a>.</strong></p>
 </section>
 </section>
 <section id="classifai" class="level2">
@@ -219,7 +219,7 @@ For example, a good pre-trained Language Model shown the phrase “tuktuk” wou
 <p>While the ability to consider context may represent a significant advantage, it should be noted that the use of pre-trained models as vectorisers can be restricted in certain circumstances, and their use can be more computationally intensive compared to TF-IDF (but, depending on implementation, this can be effectively managed).</p>
 <section id="application-and-performance-1" class="level3">
 <h3 class="anchored" data-anchor-id="application-and-performance-1">Application and performance</h3>
-<p><strong>For a demonstration of the use of classifai (specifically for classifying jobs to ISCO-08), and performance tests, see HERE.</strong></p>
+<p><strong>For a demonstration of the use of classifai (specifically for classifying jobs to ISCO-08), and performance tests, see <a href="https://jeroenminderman.github.io/occ-coding-tests/demos_performance.html#classifai">HERE</a>.</strong></p>
 
 
 </section>
