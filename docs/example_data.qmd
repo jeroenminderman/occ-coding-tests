@@ -31,7 +31,7 @@ Each record is also assigned a “Type” to indicate potential coding issues—
 
 To compare coding accuracy between tools, a shared benchmark is essential.  
   
-Ideally, this would be real-world data thoroughly coded and validated by clerical coders, but we are not aware of publicly accessible, rigorously cross-checked datasets that meet these requirements. Even if available, real-world data could not isolate or analyse specific input-data issues (e.g., known ambiguous cases).
+Ideally, this would be real-world data coded and thoroughly validated by clerical coders, but we are not aware of publicly accessible, rigorously cross-checked datasets coded to ISCO-08 that meet these requirements. Even if available, real-world data could not isolate or analyse specific input-data issues (e.g., known ambiguous cases, see [below](#ambiguous-cases)).
 
 ### Purpose
 
@@ -118,6 +118,7 @@ The ISCO-08 scheme includes examples of job titles that are expected to be direc
 In many practical cases, text input describing occupations can be ambiguous in terms of classification to the scheme.  
 
 This is most apparent in cases where detail is lacking in text inputs. Extreme examples are "farmer" or "teacher": in both cases, the scheme requires significantly more detail to allow confident coding to any level of granularity in the scheme. For "farmer", for coding to 4 digits, ISCO-08 expects differentiation between e.g. livestock and crop farmers; or subsistence and commercial farmer. For "teacher", 4-digit coding requires detail on the level of education, e.g. primary or secondary.  
+**In our experience, such data limitations and resulting ambiguity is very common in real-world data, where for many different reasons enumerators often record only very limited written text (e.g. 2-3 words), even if survey guidelines specify more information should be included. **
 
 Similar to the 'exact match' example types above, the TYPE classes in the examples attempts to distinguish between three (partly overlapping/subjective) subtypes as listed below. Note that the assignment of these is (to some extent) open to interpretation, but an attempt is made to distinguish these to help potential for deeper analyses and comparisons.
 
