@@ -15,7 +15,7 @@ execute:
 
 ## Background and context
 
-This repository includes a synthetic data file containing example text descriptions of occupations (including tasks, industry etc), coded to the [ISCO-08 International Standard Classification of Occupations](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/) scheme.  
+This repository includes a [synthetic data file](https://github.com/jeroenminderman/occ-coding-tests/blob/main/data/isco_benchmark_data.csv) containing example text descriptions of occupations (including tasks, industry etc), coded to the [ISCO-08 International Standard Classification of Occupations](https://ilostat.ilo.org/methods/concepts-and-definitions/classification-occupation/) scheme.  
 
 ### Data included here
 
@@ -48,7 +48,7 @@ Any additions will be reviewed before inclusion in the `main` branch of the repo
 
 ## Data format & structure
 
-The [example data file is in CSV format]("../data/isco_benchmark_data.csv") to maximise accessibility, interchangeability, while minimising potential cross-platform formatting issues.  
+The [example data file is in CSV format](https://github.com/jeroenminderman/occ-coding-tests/blob/main/data/isco_benchmark_data.csv) to maximise accessibility, interchangeability, while minimising potential cross-platform formatting issues.  
 **The file has strict formatting requirements**: these are enforced using validation steps, and any changes or additions to the data require validation to be passed before further code is run. For details see sections below, but in general:
 
 - A fixed number of expected columns (see below): if extra ones are found or some are missing, validation fails.  
