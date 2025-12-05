@@ -160,10 +160,12 @@ PROCESSED_ISCO_DATA = "../data/ISCO-08-processed.csv" # Please adjust this path 
 ```
 
 We can now download and save the ISCO file using a [simple helper function](https://github.com/jeroenminderman/occ-coding-tests/blob/a0bc505a45ade952bba7a2928013a21fd6bf4909/src/utils.py#L88) included with this repository:
+```{python}
+sys.path.append(os.path.abspath(".."))
+```
 ```{python, echo: true}
 #| echo: true
 import os, sys
-sys.path.append(os.path.abspath(".."))
 from src.utils import get_isco_scheme_data
 if not os.path.exists(ISCO_DATA_FILE):
     get_isco_scheme_data(source_url=ISCO_DATA_SOURCE, local_file_path=ISCO_DATA_FILE)
@@ -267,4 +269,4 @@ Based on a [synthetic benchmark data set](example_data.qmd) (N = `{python} len(e
 - **Both tools perform better when all top 3 predictions are considered, with occupationcoder-international at `{python} matches(example_coded, preds1, "prop")[1]` and Classifai at `{python} matches(example_coded, preds2, "prop")[1]`**.
 - Comparing occupationcoder-international and Classifai:  
     - **Classifai's accuracy performs better for *a priori* ambiguous cases (`{python} matches(t3a, preds2, "prop")[0]`), compared to occupationcoder-international (`{python} matches(t3, preds1, "prop")[0]`)**.
-    - Whereas (as expected, given its design) occupationcoder-international correctly matches all expected exact matches; Classifai misses a relatively small number of these.  
+    - Whereas (as expected, given its design) occupationcoder-international correctly matches all expected exact matches, Classifai misses a relatively small number of these.  

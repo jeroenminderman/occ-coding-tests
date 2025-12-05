@@ -18,7 +18,7 @@ With this repository, we aim to provide a demonstration of:
 
 2. The (relative) performance of such coding tools, benchmarked against a common example data set.  
 
-We compare two tools that can **support** the occupation coding process - [occupationcoder-international](https://github.com/datasciencecampus/occupationcoder-international) and [Classifai](https://github.com/datasciencecampus/classifai). Other tools are available. **It is also worth stressing that in the way they are used here, the tools themselves should be seen as just a small part of a wider coding "pipeline". For example, in production settings, it will be important to embed the workflow set out here into a wider process that might include initial data processing, but also post-processing steps that might involve (for example) confirming final classification**.
+We compare two tools that can **support** the occupation coding process - [occupationcoder-international](https://github.com/datasciencecampus/occupationcoder-international) and [Classifai](https://github.com/datasciencecampus/classifai). Other tools are available. It is also worth stressing that in the way they are used here, the tools used here should be seen as just a small part of a wider coding "pipeline". For example, in production settings, it will be important to embed the workflow set out here into a wider process that might include initial data processing, but also post-processing steps that might involve (for example) confirming final classification.
 
 # Background and context
 
