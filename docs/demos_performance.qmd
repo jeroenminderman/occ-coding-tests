@@ -161,11 +161,11 @@ PROCESSED_ISCO_DATA = "../data/ISCO-08-processed.csv" # Please adjust this path 
 
 We can now download and save the ISCO file using a [simple helper function](https://github.com/jeroenminderman/occ-coding-tests/blob/a0bc505a45ade952bba7a2928013a21fd6bf4909/src/utils.py#L88) included with this repository:
 ```{python}
+import os, sys
 sys.path.append(os.path.abspath(".."))
 ```
 ```{python, echo: true}
 #| echo: true
-import os, sys
 from src.utils import get_isco_scheme_data
 if not os.path.exists(ISCO_DATA_FILE):
     get_isco_scheme_data(source_url=ISCO_DATA_SOURCE, local_file_path=ISCO_DATA_FILE)
